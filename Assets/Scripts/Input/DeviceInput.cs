@@ -1,0 +1,72 @@
+using System;
+using UnityEngine;
+
+public abstract class DeviceInput : MonoBehaviour
+{
+    public bool AcceptInputs 
+    {
+        get {return acceptInputs;}
+        set {acceptInputs = value;}
+    }
+    public Vector2 InputDirection
+    {
+        get {return inputDirection;}
+        protected set {
+            if(value != inputDirection && acceptInputs)
+            {
+                inputDirection = value;
+                OnInputDirectionChanged();
+            }
+        }
+    }
+    public EventHandler<InputEventArgs> onInputDirectionChanged;
+
+    public Vector3 TouchPosition
+    {
+        get {return touchPosition;}
+        protected set {
+            if(value != touchPosition && acceptInputs)
+            {
+                touchPosition = value;
+            }
+        }
+    }
+
+    protected bool acceptInputs = false;
+    private Vector2 inputDirection = Vector2.zero;
+    private Vector3 touchPosition = Vector2.zero;
+
+
+    
+    void Update()
+    {
+        SetInputDirection();
+        SetTouchPosition();
+    }
+    
+    public void ResetInput()
+    {
+        bool oldAcceptInputs = acceptInputs;
+        acceptInputs = true;
+
+        InputDirection = Vector2.zero;
+        TouchPosition = Vector2.zero;
+
+        acceptInputs = oldAcceptInputs;
+    }
+
+    protected abstract void SetInputDirection();
+    protected abstract void SetTouchPosition();
+    
+    protected void OnInputDirectionChanged() => onInputDirectionChanged?.Invoke(this, new InputEventArgs(InputDirection));
+}
+
+public class InputEventArgs : EventArgs
+{
+    public readonly Vector2 inputDirection;
+
+    public InputEventArgs(Vector2 inputDirection)
+    {
+        this.inputDirection = inputDirection;
+    }
+}
