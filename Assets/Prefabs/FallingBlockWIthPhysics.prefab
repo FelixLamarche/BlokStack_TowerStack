@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7746589341901341614}
   - component: {fileID: 4840324562557817054}
   m_Layer: 0
-  m_Name: BlockWIthPhysics
+  m_Name: FallingBlockWIthPhysics
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -16,14 +16,14 @@ public class TowerMovement : MonoBehaviour
     float leftSideMinX = Mathf.NegativeInfinity;
     float rightSideMaxX = Mathf.Infinity;
 
-    float speed = 0f;
+    float curSpeed = 0f;
 
-    PlatformTower platform;
+    BlockPlatform platform;
     BlockTowerElement movingBlock;
 
     void Awake()
     {
-        platform = FindObjectOfType<PlatformTower>();
+        platform = FindObjectOfType<BlockPlatform>();
     }
 
     void Start()
@@ -34,23 +34,41 @@ public class TowerMovement : MonoBehaviour
     void FixedUpdate()
     {
         // TODO slow down the movement speed of touch controls
-        if(useTouchControls)
-        {
-            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition + Vector3.back * Camera.main.transform.position.z);
-            float nextXPosition = worldPoint.x - transform.position.x;
-            if(Mathf.Abs(nextXPosition) > Mathf.Epsilon)
-                Move(nextXPosition);
-            else
-                Decelerate();
-        }
-        else
-        {
-            float inputLateralSpeed = GameInput.InputDirection.x;
-            if(Mathf.Abs(inputLateralSpeed) > Mathf.Epsilon)
-                Move(inputLateralSpeed);
-            else 
-                Decelerate();
-        }
+        // if(useTouchControls)
+        // {
+        //     Vector3 worldPoint = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition + Vector3.back * Camera.main.transform.position.z);
+        //     float nextXPosition = worldPoint.x - transform.position.x;
+        //     if(Mathf.Abs(nextXPosition) > Mathf.Epsilon)
+        //         Move(nextXPosition);
+        //     else
+        //         Decelerate();
+        // }
+        // else
+        // {
+        //     float inputLateralSpeed = GameInput.InputDirection.x;
+        //     if(Mathf.Abs(inputLateralSpeed) > Mathf.Epsilon)
+        //         Move(inputLateralSpeed);
+        //     else 
+        //         Decelerate();
+        // }
+
+
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition);
+
+        float nextXPosition = worldPoint.x - movingBlock.transform.position.x;
+        Debug.Log($"Viewport: {Camera.main.ScreenToViewportPoint(GameInput.TouchPosition)}");
+        Debug.Log($"WorldPoint: {worldPoint}");
+        Debug.Log($"TouchPosition: ${GameInput.TouchPosition}");
+        Debug.Log($"nextXPosition {nextXPosition}");
+
+        float inputLateralSpeed = GameInput.InputDirection.x;
+
+        if(Mathf.Abs(nextXPosition) > Mathf.Epsilon)
+            Move(nextXPosition);
+        else if(Mathf.Abs(inputLateralSpeed) > Mathf.Epsilon)
+            Move(inputLateralSpeed);
+        else 
+            Decelerate();
     }
 
     // Used by game canvas button
@@ -61,15 +79,17 @@ public class TowerMovement : MonoBehaviour
 
     public void ResetPlatform()
     {
-        speed = 0;
+        curSpeed = 0;
         movingBlock = platform;
     }
 
     public void SetMovingBlock(BlockTowerElement block)
     {
         movingBlock = block;
-        if(block is BlockNoPhysics)
-            ((BlockNoPhysics) block).followBlockBelow = false;
+        if(block is FallingBlock)
+        {
+            ((FallingBlock) block).followBlockBelow = false;
+        }
         block.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
@@ -88,9 +108,9 @@ public class TowerMovement : MonoBehaviour
     // normalizedSpeed : [-1, 1]
     void Move(float normalizedSpeed)
     {
-        float t = Time.deltaTime / accelerationTime + speed / maxSpeed;
-        speed = Mathf.Lerp(0, maxSpeed, t);
-        Vector3 newPos = movingBlock.transform.position + Vector3.right * normalizedSpeed * speed * Time.deltaTime;
+        float t = Time.deltaTime / accelerationTime + curSpeed / maxSpeed;
+        curSpeed = Mathf.Lerp(0, maxSpeed, t);
+        Vector3 newPos = movingBlock.transform.position + Vector3.right * normalizedSpeed * curSpeed * Time.deltaTime;
         // Clamping within the boundaries of the walls
         newPos.x = Mathf.Clamp(newPos.x, leftSideMinX, rightSideMaxX);
         movingBlock.GetComponent<Rigidbody2D>().MovePosition(newPos);
@@ -98,6 +118,6 @@ public class TowerMovement : MonoBehaviour
 
     void Decelerate()
     {
-        speed = Mathf.Max(0, speed - maxSpeed * Time.deltaTime / accelerationTime);
+        curSpeed = Mathf.Max(0, curSpeed - maxSpeed * Time.deltaTime / accelerationTime);
     }
 }

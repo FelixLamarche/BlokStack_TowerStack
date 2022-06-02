@@ -12,6 +12,5 @@ public class DesktopInput : DeviceInput
         {
             TouchPosition = Input.mousePosition;
         }
-            
     }
 }

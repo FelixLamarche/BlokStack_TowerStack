@@ -37,7 +37,6 @@ public abstract class DeviceInput : MonoBehaviour
     private Vector3 touchPosition = Vector2.zero;
 
 
-    
     void Update()
     {
         SetInputDirection();
@@ -50,7 +49,7 @@ public abstract class DeviceInput : MonoBehaviour
         acceptInputs = true;
 
         InputDirection = Vector2.zero;
-        TouchPosition = Vector2.zero;
+        TouchPosition = new Vector2(Camera.main.scaledPixelWidth / 2, Camera.main.scaledPixelHeight / 2);
 
         acceptInputs = oldAcceptInputs;
     }

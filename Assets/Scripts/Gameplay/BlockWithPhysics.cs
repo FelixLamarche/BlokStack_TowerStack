@@ -2,14 +2,15 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+// TODO unused code
 public class BlockWithPhysics : BlockTowerElement
 {
     [SerializeField]
     private float timeToSlideToCenter = 0.2f;
 
     FixedJoint2D fixedJoint2D;
-    // TODO make blocks fall at a constant rate
-    // TODO check if moving center of mass makes it easier
+    // TOD make blocks fall at a constant rate
+    // TOD check if moving center of mass makes it easier
     //      Locking the Z-rotation also allows the tower to stick together while ignoring the center of mass
     void Awake()
     {
@@ -45,8 +46,8 @@ public class BlockWithPhysics : BlockTowerElement
     }
 
 
-    // TODO stop the blocks from rotating while sliding
-    // TODO make the blocks center in the tower while the tower is at rest, by making all of them slide to the tower's center
+    // TOD stop the blocks from rotating while sliding
+    // TOD make the blocks center in the tower while the tower is at rest, by making all of them slide to the tower's center
     // Slides the block to the center of the underneath's platform center
     IEnumerator SlideToCenterOfTower(BlockTowerElement blockBelow){
         float t = 0f;

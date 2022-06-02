@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class BlockNoPhysics : BlockTowerElement
+public class FallingBlock : BlockTowerElement
 {
     public bool followBlockBelow = true;
-    float xDeltaBlockBelow = 0f;
+
+    bool followPerfectlyBlockBelow = true;
+    float xDeltaBlockBelow = 0f; // the first frame's x difference from the first frame to keep track of the original seperation
     BlockTowerElement blockBelow;
 
     Rigidbody2D rb;
@@ -26,30 +28,26 @@ public class BlockNoPhysics : BlockTowerElement
 
     public void FollowTower()
     {
-        if(blockBelow is null || !followBlockBelow)
-            return;
+        if(blockBelow is null || !followBlockBelow) return;
 
         // For "simultaneous movements" start tracking block above, and recursively call every single moveposition
-        rb.MovePosition(new Vector3 (blockBelow.transform.position.x + xDeltaBlockBelow, transform.position.y, transform.position.z));
+        if(followPerfectlyBlockBelow)
+            rb.MovePosition(new Vector3 (blockBelow.transform.position.x, transform.position.y, transform.position.z));
+        else    
+            rb.MovePosition(new Vector3 (blockBelow.transform.position.x + xDeltaBlockBelow, transform.position.y, transform.position.z));
     }
 
     void OnCollisionEnter2D(Collision2D collision2D)
     {
-        if(TowerIn == null)
-        {
-            // Check if it was the top block of the blocktower then attach itself to it
-            BlockTowerElement collidedBlockElement;
-            if(collision2D.gameObject.TryGetComponent<BlockTowerElement>(out collidedBlockElement) &&
-                collidedBlockElement.TowerIn != null &&
-                collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
-            {
-                // TODO check if block is close enough to the top to enter, touching the top block is not sufficient
-                EnterTower(collidedBlockElement.TowerIn);
-            }
-        }
+        CheckForTowerCollision(collision2D);
     }
 
     void OnCollisionStay2D(Collision2D collision2D)
+    {
+        CheckForTowerCollision(collision2D);
+    }
+
+    void CheckForTowerCollision(Collision2D collision2D) 
     {
         if(TowerIn == null)
         {

@@ -4,24 +4,30 @@ using UnityEngine;
 public class BlockTower : MonoBehaviour
 {
     public List<BlockTowerElement> blocksStacked = new List<BlockTowerElement>();
-
-    TowerMovement towerMovement;
-    GameCamera gameCamera;
-
-    PlatformTower platformTower;
-    public PlatformTower PlatformTower 
+    public BlockPlatform PlatformTower 
     {
         get {return platformTower;}
         private set {platformTower = value;}
     }
 
+    GameCamera gameCamera;
+    ScoreManager scoreManager;
+
+    TowerMovement towerMovement;
+    BlockPlatform platformTower;
+
     int scoreBlocksStacked = 0;
 
     void Awake()
     {
-        PlatformTower = GetComponent<PlatformTower>();
+        PlatformTower = GetComponent<BlockPlatform>();
+    }
+
+    void Start()
+    {
         towerMovement = FindObjectOfType<TowerMovement>();
         gameCamera = FindObjectOfType<GameCamera>();
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     public BlockTowerElement GetTopBlockElement()
@@ -44,7 +50,7 @@ public class BlockTower : MonoBehaviour
     {
         blocksStacked.Add(blockToAdd);
         scoreBlocksStacked += blockToAdd.Score;
-        GameManager.instance.ScoreManager.SetScore(scoreBlocksStacked);
+        scoreManager.SetScore(scoreBlocksStacked);
         UpdateTowerMovementTarget();
     }
 
@@ -65,18 +71,20 @@ public class BlockTower : MonoBehaviour
             return;
 
         float yHeightMin = gameCamera.CalculateEdgeOfScreenHeight(transform.position.z + 0.5f, VerticalDirection.below);
-        // Remove 1 from height to avoid dealing with resizing camera and to give a little bit of leeway
-        yHeightMin -= 1;
+        // Remove an additional constant to give a bit more leeway to the tower
+        const float yHeightLeeway = 1;
+        yHeightMin -= yHeightLeeway;
+        
         int index = blocksStacked.Count - 1;
-        BlockTowerElement block = blocksStacked[index];
+        BlockTowerElement lowestBlockOnScreen = blocksStacked[index];
         while(index >= 0)
         {
-            if(block.transform.position.y - block.Height < yHeightMin)
+            if(lowestBlockOnScreen.transform.position.y - lowestBlockOnScreen.Height < yHeightMin)
                 break;
-            block = blocksStacked[index];
+            lowestBlockOnScreen = blocksStacked[index];
             index--;
         }
 
-        towerMovement.SetMovingBlock(block);
+        towerMovement.SetMovingBlock(lowestBlockOnScreen);
     }
 }

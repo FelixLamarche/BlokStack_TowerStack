@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/MainScene.unity
-    guid: 8b8711d6e83ebf24ca96b105c528400a
   - enabled: 1
-    path: Assets/Scenes/StackingMode.unity
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: d27fa07d7169f5b42bdf060fee9002b7
+  - enabled: 1
+    path: Assets/Scenes/GameplayScene.unity
     guid: 807f8f35595060e4290177afd2b23be8
   m_configObjects: {}

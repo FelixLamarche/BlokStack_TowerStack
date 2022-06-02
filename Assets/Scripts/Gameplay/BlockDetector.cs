@@ -6,12 +6,14 @@ public class BlockDetector : MonoBehaviour
     float verticalDistanceFromBottomOfCamera;
 
     GameCamera gameCamera;
+    GameplayManager gameplayManager;
 
     void Awake()
     {
         gameCamera = FindObjectOfType<GameCamera>();
-        FollowCamera();
+        gameplayManager = FindObjectOfType<GameplayManager>();
     }
+
     void LateUpdate()
     {
         FollowCamera();
@@ -19,11 +21,16 @@ public class BlockDetector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        CheckForBlockCollision(collider);
+    }
+
+    void CheckForBlockCollision(Collider2D collider) 
+    {
         BlockTowerElement blockElement;
         if(collider.TryGetComponent<BlockTowerElement>(out blockElement) && 
             blockElement.TowerIn is null)
         {
-            GameManager.instance.StopGame();
+            gameplayManager.StopGame();
         }
     }
 

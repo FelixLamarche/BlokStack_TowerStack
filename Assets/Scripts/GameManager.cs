@@ -1,22 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance {get; private set;}
 
-    [SerializeField]
-    BlockSpawner blockSpawner;
-    [SerializeField]
-    BlockTower blockTower;
-
-    MainMenuManager mainMenuManager;
-    ScoreManager scoreManager;
-    GameCamera gameCamera;
-
-    public bool GameRunning {get; private set;}
-    public ScoreManager ScoreManager {get {return scoreManager;}}
-
-    // TODO make a GAMEMANAGER as a STATIC CLASS not inheriting from monobehaviour
     void Awake()
     {
         if(instance is null)
@@ -24,52 +12,10 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        GameRunning = false;
-
-        scoreManager = GetComponent<ScoreManager>();
-        mainMenuManager = GetComponent<MainMenuManager>();
-        gameCamera = FindObjectOfType<GameCamera>();
+        DontDestroyOnLoad(this.gameObject);
 
         // TODO change this to be native 
         Screen.SetResolution(Screen.height * 9 / 16, Screen.height, true);
-
-
-        // TODO REMOVE FOLLOWING LINES OF TEST
-        GameInput.AcceptInputs = true;
-    }
-
-
-    public void StartGame()
-    {
-        if(GameRunning)
-            return;
-
-        blockSpawner.RemoveAllBlocksSpawned();
-        blockTower.ResetTower();
-        
-
-        mainMenuManager.ShowGameUI();
-        scoreManager.ResetScore();
-        
-        gameCamera.ResetCamera();
-
-        blockSpawner.StartSpawning();
-
-        GameInput.AcceptInputs = true;
-        scoreManager.IsCounting = true;
-        GameRunning = true;
-    }
-
-    public void StopGame()
-    {
-        if(!GameRunning)
-            return;
-
-        scoreManager.IsCounting = false;
-        GameRunning = false;
-
-        mainMenuManager.ShowLoseUI();
-        blockSpawner.StopSpawning();
     }
 
     public DeviceInput AddDeviceInput()
@@ -82,5 +28,15 @@ public class GameManager : MonoBehaviour
         #endif
 
         return deviceInput;
+    }
+
+    public void LoadMainMenuScene()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void LoadGameplayScene()
+    {
+        SceneManager.LoadScene("GameplayScene");
     }
 }

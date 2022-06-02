@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlatformTower : BlockTowerElement
+public class BlockPlatform : BlockTowerElement
 {
     BlockTower blockTower;
 

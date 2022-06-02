@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockSpawner : MonoBehaviour
 {
     [SerializeField]
-    GameObject block;
+    GameObject blockPrefab;
 
     [SerializeField]
     float timeBetweenSpawns = 2f;
@@ -34,7 +34,7 @@ public class BlockSpawner : MonoBehaviour
     public void StartSpawning()
     {
         if(spawnCoroutine is null)
-            spawnCoroutine = StartCoroutine(SpawnBlocks());
+            spawnCoroutine = StartCoroutine(StartSpawningBlocks());
     }
 
     public void StopSpawning()
@@ -56,7 +56,7 @@ public class BlockSpawner : MonoBehaviour
     }
 
 
-    IEnumerator SpawnBlocks()
+    IEnumerator StartSpawningBlocks()
     {
         while(true)
         {
@@ -69,15 +69,15 @@ public class BlockSpawner : MonoBehaviour
     void SpawnBlock()
     {
         // To spawn within the boundaries of the blockSpawner
-        float xDisplacement = block.transform.localScale.x / 2;
-        float zDisplacement = block.transform.localScale.z / 2;
+        float maxXDisplacement = blockPrefab.transform.localScale.x / 2;
+        float maxZDisplacement = blockPrefab.transform.localScale.z / 2;
 
         Vector3 spawnPoint = transform.position + 
-            Vector3.right * Random.Range(-width / 2 + xDisplacement, width / 2 - xDisplacement) +
-            Vector3.forward * Random.Range(-depth / 2 + zDisplacement, depth / 2 - zDisplacement)
-            + Vector3.up * block.transform.localScale.y / 2;
+            Vector3.right * Random.Range(-width / 2 + maxXDisplacement, width / 2 - maxXDisplacement) +
+            Vector3.forward * Random.Range(-depth / 2 + maxZDisplacement, depth / 2 - maxZDisplacement)
+            + Vector3.up * blockPrefab.transform.localScale.y / 2;
         
-        GameObject blockSpawned = Instantiate(block, spawnPoint, Quaternion.identity);
+        GameObject blockSpawned = Instantiate(blockPrefab, spawnPoint, Quaternion.identity);
         blockObjectsSpawned.Add(blockSpawned);
     }
 
@@ -85,7 +85,7 @@ public class BlockSpawner : MonoBehaviour
     {
         // Always keep height at just outside of the camera view + block's size to spawn outside of the view
         float newY = gameCamera.CalculateEdgeOfScreenHeight(transform.position.z + 0.5f, VerticalDirection.above) +
-            block.transform.lossyScale.y / 2;
+            blockPrefab.transform.lossyScale.y / 2;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 

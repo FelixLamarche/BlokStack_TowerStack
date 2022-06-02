@@ -5,11 +5,10 @@ public class GameCamera : MonoBehaviour
 {
     const float timeToFitTower = 2f;
 
-    [SerializeField]
-    float startingOrthogonalSize = 7.5f;
+    float startingOrthogonalSize;
     [SerializeField]
     float maximumOrthogonalSize = 13f;
-    [SerializeField]
+    [SerializeField, Tooltip("Height between the top of the screen and the top of the tower")]
     float marginOrthogonalSize = 3f;
 
     [SerializeField]
@@ -32,7 +31,9 @@ public class GameCamera : MonoBehaviour
     void Awake()
     {
         startingPosition = transform.position;
+        startingOrthogonalSize = cameraView.orthographicSize;
         ResizeWalls();
+
     }
 
     void Start()
@@ -40,7 +41,7 @@ public class GameCamera : MonoBehaviour
         ResetCamera();
     }
 
-    void Update()
+    void LateUpdate()
     {
         ResizeCameraToFitTower();
     }
@@ -120,11 +121,6 @@ public class GameCamera : MonoBehaviour
             blockTower.GetComponent<BoxCollider2D>().size.x / 2;
         leftSidePlatformWall.MoveToNewX(newDeltaXWalls);
         rightSidePlatformWall.MoveToNewX(newDeltaXWalls);
-    }
-
-    void OnValidate()
-    {
-        cameraView.orthographicSize = startingOrthogonalSize;
     }
 
 }

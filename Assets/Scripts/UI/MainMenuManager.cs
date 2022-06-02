@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO this class is unused currently
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField]
