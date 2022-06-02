@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class TowerMovement : MonoBehaviour
 {
-    [SerializeField]
-    bool useTouchControls = false;
-
     [SerializeField, MinAttribute(0f)]
     float maxSpeed = 1.5f;
 
@@ -33,48 +30,25 @@ public class TowerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // TODO slow down the movement speed of touch controls
-        // if(useTouchControls)
-        // {
-        //     Vector3 worldPoint = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition + Vector3.back * Camera.main.transform.position.z);
-        //     float nextXPosition = worldPoint.x - transform.position.x;
-        //     if(Mathf.Abs(nextXPosition) > Mathf.Epsilon)
-        //         Move(nextXPosition);
-        //     else
-        //         Decelerate();
-        // }
-        // else
-        // {
-        //     float inputLateralSpeed = GameInput.InputDirection.x;
-        //     if(Mathf.Abs(inputLateralSpeed) > Mathf.Epsilon)
-        //         Move(inputLateralSpeed);
-        //     else 
-        //         Decelerate();
-        // }
-
-
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition);
-
-        float nextXPosition = worldPoint.x - movingBlock.transform.position.x;
-        Debug.Log($"Viewport: {Camera.main.ScreenToViewportPoint(GameInput.TouchPosition)}");
-        Debug.Log($"WorldPoint: {worldPoint}");
-        Debug.Log($"TouchPosition: ${GameInput.TouchPosition}");
-        Debug.Log($"nextXPosition {nextXPosition}");
+        Vector3 worldPointTouch = Camera.main.ScreenToWorldPoint(GameInput.TouchPosition);
+        float nextXPositionTouch = worldPointTouch.x - movingBlock.transform.position.x;
 
         float inputLateralSpeed = GameInput.InputDirection.x;
 
-        if(Mathf.Abs(nextXPosition) > Mathf.Epsilon)
-            Move(nextXPosition);
+        if(GameInput.IsTouchingScreen && Mathf.Abs(nextXPositionTouch) > Mathf.Epsilon)
+        {
+
+            Debug.Log($"xPos: ${nextXPositionTouch}");
+            float speedDirection = Mathf.Sign(nextXPositionTouch);
+            // Normalize speed to be between [-1,1]
+            float moveSpeedNormalized = Mathf.Abs(nextXPositionTouch) > 1 ? speedDirection : nextXPositionTouch;
+
+            Move(moveSpeedNormalized);
+        }
         else if(Mathf.Abs(inputLateralSpeed) > Mathf.Epsilon)
             Move(inputLateralSpeed);
         else 
             Decelerate();
-    }
-
-    // Used by game canvas button
-    public void SetTouchControls(bool useTouchControls)
-    {
-        this.useTouchControls = useTouchControls;
     }
 
     public void ResetPlatform()

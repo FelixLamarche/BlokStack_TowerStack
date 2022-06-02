@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GameCamera : MonoBehaviour
 {
-    const float timeToFitTower = 2f;
-
     float startingOrthogonalSize;
     [SerializeField]
     float maximumOrthogonalSize = 13f;
     [SerializeField, Tooltip("Height between the top of the screen and the top of the tower")]
     float marginOrthogonalSize = 3f;
+
+    const float minTimeToFitTowerInFrame = 1f;
 
     [SerializeField]
     BackgroundGradient background;
@@ -102,14 +102,22 @@ public class GameCamera : MonoBehaviour
         float yHeightBefore = transform.position.y;
         float yHeight = 0f;
 
+        float timeToFitTower = minTimeToFitTowerInFrame;
+        BlockSpawner blockSpawner = FindObjectOfType<BlockSpawner>();
+        if(blockSpawner != null) 
+            timeToFitTower = Mathf.Min(timeToFitTower, blockSpawner.CurTimeBetweenSpawns);
+
         while(t < 1)
         {
             t += Time.deltaTime / timeToFitTower;
             cameraView.orthographicSize = Mathf.Lerp(sizeBefore, orthogonalSizeGoal, t);
+
             yHeight = Mathf.Lerp(yHeightBefore, yHeightGoal, t);
-            background.ScaleToFitOrthographicCameraView(cameraView.orthographicSize);
             transform.position = new Vector3(transform.position.x, yHeight, transform.position.z);
+
+            background.ScaleToFitOrthographicCameraView(cameraView.orthographicSize);
             ResizeWalls();
+
             yield return null;
         }
         resizingCameraCoroutine = null;

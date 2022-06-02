@@ -13,6 +13,9 @@ public static class GameInput
     public static Vector3 TouchPosition {
         get {return deviceInput.TouchPosition;}
     }
+    public static bool IsTouchingScreen {
+        get {return deviceInput.isTouchingScreen;}
+    }
     static Vector2 inputDirection;
     static DeviceInput deviceInput;
 

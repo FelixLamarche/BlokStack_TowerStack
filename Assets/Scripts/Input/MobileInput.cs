@@ -9,9 +9,10 @@ public class MobileInput : DeviceInput
 
     protected override void SetTouchPosition()
     {
-        if(Input.touchCount == 0)
-            return;
-            
-        TouchPosition = Input.GetTouch(0).position;
+        isTouchingScreen = Input.touchCount > 0;
+        if(isTouchingScreen)
+        {
+            TouchPosition = Input.GetTouch(0).position;
+        }
     }
 }

@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class BlockSpawner : MonoBehaviour
 {
+    public float CurTimeBetweenSpawns {get {return curTimeBetweenSpawns;}}
+
     [SerializeField]
     GameObject blockPrefab;
 
     [SerializeField]
-    float timeBetweenSpawns = 2f;
+    float startingTimeBetweenSpawns = 1f;
+    [SerializeField]
+    float minimumTimeBetweenSpawns = 0.5f;
+    [SerializeField, Tooltip("Amount of time decreased by each further spawn")]
+    float spawnTimeDifferencePerSpawn = 0.02f;
+
+    float curTimeBetweenSpawns;
+
 
     [SerializeField]
     float width = 3f;
 
     [SerializeField]
     float depth = 1f;
+
 
     GameCamera gameCamera;
 
@@ -24,6 +34,7 @@ public class BlockSpawner : MonoBehaviour
     void Awake()
     {
         gameCamera = FindObjectOfType<GameCamera>();
+        curTimeBetweenSpawns = startingTimeBetweenSpawns;
     }
 
     void LateUpdate()
@@ -61,8 +72,9 @@ public class BlockSpawner : MonoBehaviour
         while(true)
         {
             // DONT CHANGE ORDERING, otherwise 2 blocks spawn at the same time after a retry
-            yield return new WaitForSeconds(timeBetweenSpawns);
+            yield return new WaitForSeconds(curTimeBetweenSpawns);
             SpawnBlock();
+            curTimeBetweenSpawns = Mathf.Max(curTimeBetweenSpawns - spawnTimeDifferencePerSpawn, minimumTimeBetweenSpawns);
         }
     }
 

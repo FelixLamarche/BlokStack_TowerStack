@@ -8,7 +8,8 @@ public class DesktopInput : DeviceInput
     }
     protected override void SetTouchPosition()
     {
-        if(Input.GetMouseButton(0))
+        isTouchingScreen = Input.GetMouseButton(0);
+        if(isTouchingScreen)
         {
             TouchPosition = Input.mousePosition;
         }

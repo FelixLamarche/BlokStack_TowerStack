@@ -32,6 +32,8 @@ public abstract class DeviceInput : MonoBehaviour
         }
     }
 
+    public bool isTouchingScreen {get; protected set;}
+
     protected bool acceptInputs = false;
     private Vector2 inputDirection = Vector2.zero;
     private Vector3 touchPosition = Vector2.zero;
