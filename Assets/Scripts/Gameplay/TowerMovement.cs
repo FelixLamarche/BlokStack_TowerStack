@@ -37,8 +37,6 @@ public class TowerMovement : MonoBehaviour
 
         if(GameInput.IsTouchingScreen && Mathf.Abs(nextXPositionTouch) > Mathf.Epsilon)
         {
-
-            Debug.Log($"xPos: ${nextXPositionTouch}");
             float speedDirection = Mathf.Sign(nextXPositionTouch);
             // Normalize speed to be between [-1,1]
             float moveSpeedNormalized = Mathf.Abs(nextXPositionTouch) > 1 ? speedDirection : nextXPositionTouch;

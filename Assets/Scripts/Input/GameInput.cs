@@ -10,7 +10,10 @@ public static class GameInput
     public static Vector2 InputDirection {
         get {return deviceInput.InputDirection;}
     }
-    public static Vector3 TouchPosition {
+    /// <summary>
+    /// Position in pixels with (0,0) being positioned on the bottom left
+    /// </summary>
+    public static Vector2 TouchPosition {
         get {return deviceInput.TouchPosition;}
     }
     public static bool IsTouchingScreen {

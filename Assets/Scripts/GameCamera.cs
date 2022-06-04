@@ -46,24 +46,53 @@ public class GameCamera : MonoBehaviour
         ResizeCameraToFitTower();
     }
 
-    // Calculate the height difference required to spawn the blocks out of the camera's frame
-    public float CalculateEdgeOfScreenHeight(float zPos, VerticalDirection direction)
+    // Calculate the height of the edge of the screen of the given direction
+    public float CalculateEdgeOfScreenPosition(float zPos, VerticalDirection direction)
     {
         // Remove angle, tan(angle) * adjacent = opposite -> y displacement
-        float yDeltaByAngle = Mathf.Tan(cameraView.transform.rotation.eulerAngles.x * Mathf.Deg2Rad) * 
-            Mathf.Abs(cameraView.transform.position.z - zPos);
+        float yAngleDisplacement = Mathf.Abs(Mathf.Tan(cameraView.transform.rotation.eulerAngles.x * Mathf.Deg2Rad) * 
+            (zPos - cameraView.transform.position.z));
         float yPos = cameraView.transform.position.y;
 
         if(direction == VerticalDirection.above)
-            yPos += cameraView.orthographicSize;
+            yPos += cameraView.orthographicSize / Mathf.Cos(cameraView.transform.rotation.eulerAngles.x * Mathf.Deg2Rad);
         else if(direction == VerticalDirection.below)
-            yPos -= cameraView.orthographicSize;
+            yPos -= cameraView.orthographicSize / Mathf.Cos(cameraView.transform.rotation.eulerAngles.x * Mathf.Deg2Rad);
         if(cameraView.transform.rotation.eulerAngles.x >= 0)
-            yPos -= yDeltaByAngle;
+            yPos -= yAngleDisplacement;
         else if(cameraView.transform.rotation.eulerAngles.x < 0)
-            yPos += yDeltaByAngle;
+            yPos += yAngleDisplacement;
 
         return yPos;
+    }
+
+    // Factors in the angle of the orthographic camera
+    // Returns the world position
+    // screenPos.z is the depth of the desired object
+    public Vector2 ScreenPositionToWorldPoint2D(Vector3 screenPos)
+    {
+        float angle = cameraView.transform.rotation.eulerAngles.x;
+        
+        // length of the Y displacement of the difference between the current z depth and the camera depth
+        // caused by the angle of the camera
+        float yAngleDisplacement = Mathf.Tan(angle * Mathf.Deg2Rad) * 
+            (screenPos.z - cameraView.transform.position.z);
+
+        // This represents the additional height gained from the projection of a straight plane onto the angled camera plane
+        float projectedHeightMaximum = Mathf.Tan(angle * Mathf.Deg2Rad) * 2 * cameraView.orthographicSize;
+        projectedHeightMaximum = projectedHeightMaximum * Mathf.Sin(angle * Mathf.Deg2Rad);
+
+        float screenViewPortHeightClamped = Mathf.Clamp01(cameraView.ScreenToViewportPoint(screenPos).y);
+        // Need to reverse, as the maximum angle discrepancy comes at the bottom of the screen which maps to 0 in viewport.
+        // So we reverse it.
+        float lerpValueHeight = Mathf.Abs(1 - screenViewPortHeightClamped);
+
+        float ySecondAngleDisplacement = Mathf.Lerp(0, projectedHeightMaximum, lerpValueHeight);
+
+        Vector2 worldPoint = cameraView.ScreenToWorldPoint(screenPos);
+        worldPoint -= Vector2.up * (yAngleDisplacement + ySecondAngleDisplacement);
+
+        return worldPoint;
     }
 
     // Only works for orthographic camera

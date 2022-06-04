@@ -96,7 +96,7 @@ public class BlockSpawner : MonoBehaviour
     private void MoveBlockSpawnerOutsideOfFrame()
     {
         // Always keep height at just outside of the camera view + block's size to spawn outside of the view
-        float newY = gameCamera.CalculateEdgeOfScreenHeight(transform.position.z + 0.5f, VerticalDirection.above) +
+        float newY = gameCamera.CalculateEdgeOfScreenPosition(transform.position.z + 0.5f, VerticalDirection.above) +
             blockPrefab.transform.lossyScale.y / 2;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }

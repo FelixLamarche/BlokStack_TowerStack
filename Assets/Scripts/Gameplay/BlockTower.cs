@@ -70,7 +70,7 @@ public class BlockTower : MonoBehaviour
         if(blocksStacked.Count == 0)
             return;
 
-        float yHeightMin = gameCamera.CalculateEdgeOfScreenHeight(transform.position.z + 0.5f, VerticalDirection.below);
+        float yHeightMin = gameCamera.CalculateEdgeOfScreenPosition(transform.position.z + 0.5f, VerticalDirection.below);
         // Remove an additional constant to give a bit more leeway to the tower
         const float yHeightLeeway = 1;
         yHeightMin -= yHeightLeeway;

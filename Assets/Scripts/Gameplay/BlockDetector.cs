@@ -36,7 +36,7 @@ public class BlockDetector : MonoBehaviour
 
     void FollowCamera()
     {
-        float newY = gameCamera.CalculateEdgeOfScreenHeight(transform.position.z, VerticalDirection.below);
+        float newY = gameCamera.CalculateEdgeOfScreenPosition(transform.position.z, VerticalDirection.below);
         transform.position = new Vector3(transform.position.x, newY - verticalDistanceFromBottomOfCamera, transform.position.z);
     }
 }

@@ -21,7 +21,7 @@ public abstract class DeviceInput : MonoBehaviour
     }
     public EventHandler<InputEventArgs> onInputDirectionChanged;
 
-    public Vector3 TouchPosition
+    public Vector2 TouchPosition
     {
         get {return touchPosition;}
         protected set {
@@ -36,7 +36,7 @@ public abstract class DeviceInput : MonoBehaviour
 
     protected bool acceptInputs = false;
     private Vector2 inputDirection = Vector2.zero;
-    private Vector3 touchPosition = Vector2.zero;
+    private Vector2 touchPosition = Vector2.zero;
 
 
     void Update()
