@@ -1359,6 +1359,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4363738254898332610, guid: f8587db9505237c4ea5aad71c1f66fc6, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363738254898332610, guid: f8587db9505237c4ea5aad71c1f66fc6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.72
+      objectReference: {fileID: 0}
     - target: {fileID: 6216687366837204939, guid: f8587db9505237c4ea5aad71c1f66fc6, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -1511,13 +1519,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7957042235077404044, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
+      propertyPath: m_Radius
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7957042235077404047, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
       propertyPath: m_Name
       value: PlayerTouch
       objectReference: {fileID: 0}
     - target: {fileID: 7957042235077404146, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7957042235077404146, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
       propertyPath: m_LocalPosition.x
