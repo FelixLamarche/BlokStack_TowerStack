@@ -47,7 +47,7 @@ public class GameCamera : MonoBehaviour
     }
 
     // Calculate the height of the edge of the screen of the given direction
-    public float CalculateEdgeOfScreenPosition(float zPos, VerticalDirection direction)
+    public float CalculateVerticalEdgeOfScreen(float zPos, VerticalDirection direction)
     {
         // Remove angle, tan(angle) * adjacent = opposite -> y displacement
         float yAngleDisplacement = Mathf.Abs(Mathf.Tan(cameraView.transform.rotation.eulerAngles.x * Mathf.Deg2Rad) * 
@@ -64,6 +64,11 @@ public class GameCamera : MonoBehaviour
             yPos += yAngleDisplacement;
 
         return yPos;
+    }
+
+    public float CameraWidth()
+    {
+        return this.cameraView.aspect * this.cameraView.orthographicSize * 2;
     }
 
     // Factors in the angle of the orthographic camera

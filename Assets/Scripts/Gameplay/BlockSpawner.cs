@@ -14,7 +14,7 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField]
     float minimumTimeBetweenSpawns = 0.5f;
     [SerializeField, Tooltip("Amount of time decreased by each further spawn")]
-    float spawnTimeDifferencePerSpawn = 0.02f;
+    float spawnTimeDifferencePerSecond = 0.02f;
 
     float curTimeBetweenSpawns;
 
@@ -69,12 +69,21 @@ public class BlockSpawner : MonoBehaviour
 
     IEnumerator StartSpawningBlocks()
     {
+        float deltaTimeSinceSpawnTimeChanged = 0f;
+        float timeBetweenDifferences = 1f;
+
         while(true)
         {
             // DONT CHANGE ORDERING, otherwise 2 blocks spawn at the same time after a retry
             yield return new WaitForSeconds(curTimeBetweenSpawns);
             SpawnBlock();
-            curTimeBetweenSpawns = Mathf.Max(curTimeBetweenSpawns - spawnTimeDifferencePerSpawn, minimumTimeBetweenSpawns);
+
+            deltaTimeSinceSpawnTimeChanged += curTimeBetweenSpawns;
+            if(deltaTimeSinceSpawnTimeChanged >= timeBetweenDifferences)
+            {
+                deltaTimeSinceSpawnTimeChanged -= timeBetweenDifferences;
+                curTimeBetweenSpawns = Mathf.Max(curTimeBetweenSpawns - spawnTimeDifferencePerSecond, minimumTimeBetweenSpawns);
+            }
         }
     }
 
@@ -96,7 +105,7 @@ public class BlockSpawner : MonoBehaviour
     private void MoveBlockSpawnerOutsideOfFrame()
     {
         // Always keep height at just outside of the camera view + block's size to spawn outside of the view
-        float newY = gameCamera.CalculateEdgeOfScreenPosition(transform.position.z + 0.5f, VerticalDirection.above) +
+        float newY = gameCamera.CalculateVerticalEdgeOfScreen(transform.position.z + 0.5f, VerticalDirection.above) +
             blockPrefab.transform.lossyScale.y / 2;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
