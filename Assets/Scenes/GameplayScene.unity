@@ -253,7 +253,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2050583080960960094, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
   m_PrefabInstance: {fileID: 2050583080813059894}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797586867}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f69468a288ccee4ebce63d93e459f8d, type: 3}
@@ -663,25 +663,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 45.472, y: 32.378, z: 0.976}
---- !u!1 &797586867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2050583080960960080, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
-  m_PrefabInstance: {fileID: 2050583080813059894}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &797586869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797586867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e058ea19c03c214b8c6fb2c8cdd5d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 86293036693843656, guid: f8587db9505237c4ea5aad71c1f66fc6, type: 3}
-  startingScoreForSpawns: 1
 --- !u!1 &1036322897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,10 +1146,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2050583080960960094, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
-      propertyPath: timeBetweenSpawns
-      value: 0.75
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
 --- !u!1001 &2345493223718507386
@@ -1472,10 +1449,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7957042235077404044, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
-      propertyPath: m_Radius
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7957042235077404047, guid: 23d753c9b6e1f064c9e69c109248e94d, type: 3}
       propertyPath: m_Name
       value: PlayerTouch

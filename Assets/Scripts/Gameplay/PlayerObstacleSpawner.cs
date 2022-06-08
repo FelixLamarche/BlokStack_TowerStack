@@ -71,15 +71,14 @@ public class PlayerObstacleSpawner : MonoBehaviour
         float xPos = GameplayConstants.platformSpawnPoint.x - obstaclePrefab.transform.lossyScale.x / 2 - gameCamera.CameraWidth() / 2;
         float zPos = GameplayConstants.obstacleDepth;
 
-        float yPosMax = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.above) + 
-            obstaclePrefab.transform.lossyScale.y / 2;
-        float yPosMin = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.below) + 
-            obstaclePrefab.transform.lossyScale.y / 2;
-
         // For now, Choose a random range of a y position which spawns it anywhere within the visible screen
+        float yPosMax = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.above) - 
+            obstaclePrefab.transform.lossyScale.y;
+        float yPosMin = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.below) + 
+            obstaclePrefab.transform.lossyScale.y * 2;
         float yPos = Random.Range(yPosMin, yPosMax);
 
         Vector3 spawnPosition = new Vector3(xPos, yPos, zPos);
-        Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
+        obstaclesSpawned.Add(Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity));
     }
 }

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4363738254898332611}
   - component: {fileID: 4363738254898332612}
   - component: {fileID: 7694682450969170816}
-  - component: {fileID: 86293036693843656}
+  - component: {fileID: 3725548725017842397}
   m_Layer: 0
-  m_Name: PlayerTouchObstacle
+  m_Name: PlayerObstacleObject
   m_TagString: PlayerObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.95, y: 0.95}
   m_EdgeRadius: 0
---- !u!114 &86293036693843656
+--- !u!114 &3725548725017842397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,4 +123,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9b2083054504242a193459af083826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 3, y: 0, z: 0}
+  speed: {x: 0, y: 0, z: 0}
