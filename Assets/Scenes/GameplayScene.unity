@@ -1098,9 +1098,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 797586869, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
+      propertyPath: scoreIncreaseForSpawn
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2050583080960960080, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
       propertyPath: m_Name
-      value: Block Spawner
+      value: Gameplay Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 2050583080960960081, guid: 75285585f2a710345919be0cc36ae88a, type: 3}
       propertyPath: m_RootOrder

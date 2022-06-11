@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2050583080960960081}
   - component: {fileID: 2050583080960960094}
   - component: {fileID: 797586869}
-  - component: {fileID: 1131562129693005096}
   m_Layer: 0
   m_Name: Block Spawner
   m_TagString: Untagged
@@ -53,20 +52,6 @@ MonoBehaviour:
   width: 7
   depth: 1
 --- !u!114 &797586869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2050583080960960080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e058ea19c03c214b8c6fb2c8cdd5d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 2666297104782743585, guid: efbc8d652fb92bb48b2fd4868637e179, type: 3}
-  startingScoreForSpawns: 1
---- !u!114 &1131562129693005096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Wall
   - PlayerObstacle
+  - Spike
   layers:
   - Default
   - TransparentFX

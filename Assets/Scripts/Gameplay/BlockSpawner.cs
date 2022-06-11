@@ -9,20 +9,20 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField]
     GameObject blockPrefab;
 
-    [SerializeField]
+    [SerializeField, Min(0f)]
     float startingTimeBetweenSpawns = 1f;
-    [SerializeField]
+    [SerializeField, Min(0f)]
     float minimumTimeBetweenSpawns = 0.5f;
-    [SerializeField, Tooltip("Amount of time decreased by each further spawn")]
+    [SerializeField, Tooltip("Amount of time decreased by each further spawn"), Min(0f)]
     float spawnTimeDifferencePerSecond = 0.02f;
 
     float curTimeBetweenSpawns;
 
 
-    [SerializeField]
+    [SerializeField, Min(0f)]
     float width = 3f;
 
-    [SerializeField]
+    [SerializeField, Min(0f)]
     float depth = 1f;
 
 

@@ -40,6 +40,8 @@ public class FallingBlock : BlockTowerElement
     void OnCollisionEnter2D(Collision2D collision2D)
     {
         CheckForTowerCollision(collision2D);
+
+        CheckForSpikeCollision(collision2D);
     }
 
     void OnCollisionStay2D(Collision2D collision2D)
@@ -47,26 +49,37 @@ public class FallingBlock : BlockTowerElement
         CheckForTowerCollision(collision2D);
     }
 
+    void CheckForSpikeCollision(Collision2D collision2D)
+    {
+        if(TowerIn == null) return;
+
+
+        Spike spikeCollided;
+        if(collision2D.gameObject.TryGetComponent<Spike>(out spikeCollided))
+        {
+            Debug.Log("success");
+            TowerIn.CollisionWithSpike(spikeCollided);
+        }
+    }
+
     void CheckForTowerCollision(Collision2D collision2D) 
     {
-        if(TowerIn == null)
+        if(TowerIn != null) return;
+
+        // Check if it was the top block of the blocktower then attach itself to it
+        BlockTowerElement collidedBlockElement;
+        if(collision2D.gameObject.TryGetComponent<BlockTowerElement>(out collidedBlockElement) &&
+            collidedBlockElement.TowerIn != null &&
+            collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
         {
-            // Check if it was the top block of the blocktower then attach itself to it
-            BlockTowerElement collidedBlockElement;
-            if(collision2D.gameObject.TryGetComponent<BlockTowerElement>(out collidedBlockElement) &&
-                collidedBlockElement.TowerIn != null &&
-                collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
-            {
-                // TODO check if block is close enough to the top to enter, touching the top block is not sufficient
-                EnterTower(collidedBlockElement.TowerIn);
-            }
+            // TODO check if block is close enough to the top to enter, touching the top block is not sufficient
+            EnterTower(collidedBlockElement.TowerIn);
         }
     }
 
     void EnterTower(BlockTower blockTower)
     {
         TowerIn = blockTower;
-        rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
         transform.rotation = Quaternion.Euler(new Vector3 (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0f));
 

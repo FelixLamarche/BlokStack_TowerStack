@@ -17,7 +17,6 @@ public class PlayerObstacle : MonoBehaviour
     GameCamera gameCamera;
 
     List<PlayerObstacleObject> obstaclesSpawned;
-
     // FOR NOW, obstacles only spawn to the left and go right
 
     void Awake()
@@ -56,7 +55,7 @@ public class PlayerObstacle : MonoBehaviour
     void DestroySelf()
     {
         foreach(var obstacle in obstaclesSpawned) Destroy(obstacle.gameObject);
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     bool ShouldSpawnObstacle()

@@ -65,6 +65,11 @@ public class BlockTower : MonoBehaviour
         return blockElement is null ? 0f : blockElement.transform.position.y + blockElement.Height / 2;
     }
 
+    public void CollisionWithSpike(Spike spike)
+    {
+        FindObjectOfType<GameplayManager>().StopGame();
+    }
+
     void UpdateTowerMovementTarget()
     {
         if(blocksStacked.Count == 0)

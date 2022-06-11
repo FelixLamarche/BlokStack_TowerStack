@@ -7,8 +7,11 @@ public class PlayerObstacleSpawner : MonoBehaviour
     [SerializeField]
     PlayerObstacle obstaclePrefab;
 
-    [SerializeField]
+    [SerializeField, Min(0)]
     int startingScoreForSpawns = 10; // Upon the score reaching this much, the obstacles will start spawning
+
+    [SerializeField, Min(0)]
+    int scoreIncreaseForSpawn = 3;
 
 
     ScoreManager scoreManager;
@@ -47,9 +50,6 @@ public class PlayerObstacleSpawner : MonoBehaviour
     IEnumerator SpawnObstacles()
     {
         int scoreForNextSpawn = startingScoreForSpawns;
-        int scoreIncreasePerSpawn = 4;
-
-        Debug.Log(gameCamera.CameraWidth());
 
         while(true)
         {
@@ -61,24 +61,51 @@ public class PlayerObstacleSpawner : MonoBehaviour
 
             SpawnObstacle();
 
-            scoreForNextSpawn += scoreIncreasePerSpawn;
+            scoreForNextSpawn += scoreIncreaseForSpawn;
         }
     }
 
     void SpawnObstacle()
     {
+        // Remove all obstacles which have deleted themselves
+        obstaclesSpawned.RemoveAll(obstacle => obstacle == null);
+
+
         // Spawn outside the camera's view on the left side
         float xPos = GameplayConstants.platformSpawnPoint.x - obstaclePrefab.transform.lossyScale.x / 2 - gameCamera.CameraWidth() / 2;
         float zPos = GameplayConstants.obstacleDepth;
 
         // For now, Choose a random range of a y position which spawns it anywhere within the visible screen
-        float yPosMax = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.above) - 
-            obstaclePrefab.transform.lossyScale.y;
-        float yPosMin = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.below) + 
-            obstaclePrefab.transform.lossyScale.y * 2;
-        float yPos = Random.Range(yPosMin, yPosMax);
+        // Also, make it so no obstacle spawn one on top of another by selecting only regions which are not already occupied
+        float yPos;
+        float yMargin = 1.4f;
+
+        int iteration = 0; 
+        int maxIterations = 8; // Stop trying to find a position if no position is found within this count
+
+        bool isPosAvailable = true;
+        do {
+            float yPosMax = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.above) - 
+                obstaclePrefab.transform.lossyScale.y / 2;
+            float yPosMin = gameCamera.CalculateVerticalEdgeOfScreen(zPos, VerticalDirection.below) + 
+                obstaclePrefab.transform.lossyScale.y / 2;
+            yPos = Random.Range(yPosMin, yPosMax);
+
+            foreach(PlayerObstacle obstacle in obstaclesSpawned)
+            {
+                float heightDifference = Mathf.Abs(obstacle.transform.position.y - yPos);
+                if(heightDifference < yMargin)
+                {
+                    isPosAvailable = false;
+                    break;
+                }
+            }
+            
+            if(iteration++ >= maxIterations) return;
+        } while(!isPosAvailable);
 
         Vector3 spawnPosition = new Vector3(xPos, yPos, zPos);
         obstaclesSpawned.Add(Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity));
     }
+
 }
