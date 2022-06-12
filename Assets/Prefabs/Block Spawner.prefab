@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2050583080960960081}
   - component: {fileID: 2050583080960960094}
   - component: {fileID: 797586869}
+  - component: {fileID: 880979564}
   m_Layer: 0
   m_Name: Block Spawner
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockPrefab: {fileID: 7972996582388740992, guid: 2d5ef6e952a757d4586c9a76e471aaa8, type: 3}
-  startingTimeBetweenSpawns: 0.9
+  startingTimeBetweenSpawns: 25
   minimumTimeBetweenSpawns: 0.3
   spawnTimeDifferencePerSecond: 0.01
   width: 7
@@ -65,3 +66,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclePrefab: {fileID: 2666297104782743585, guid: efbc8d652fb92bb48b2fd4868637e179, type: 3}
   startingScoreForSpawns: 1
+  scoreIncreaseForSpawn: 3
+--- !u!114 &880979564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050583080960960080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038b67578f6df064a9494126c21d0ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spikePrefab: {fileID: 8835332936087568822, guid: 670173b71fbc3574d81192851aa1861f, type: 3}
+  startingTimeBetweenSpawns: 3
+  minimumTimeBetweenSpawns: 0.7
+  spawnTimeDifferencePerSecond: 0.01

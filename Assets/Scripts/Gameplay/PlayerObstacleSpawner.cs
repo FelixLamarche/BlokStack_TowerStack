@@ -73,7 +73,7 @@ public class PlayerObstacleSpawner : MonoBehaviour
 
         // Spawn outside the camera's view on the left side
         float xPos = GameplayConstants.platformSpawnPoint.x - obstaclePrefab.transform.lossyScale.x / 2 - gameCamera.CameraWidth() / 2;
-        float zPos = GameplayConstants.obstacleDepth;
+        float zPos = GameplayConstants.playerObstacleDepth;
 
         // For now, Choose a random range of a y position which spawns it anywhere within the visible screen
         // Also, make it so no obstacle spawn one on top of another by selecting only regions which are not already occupied

@@ -42,7 +42,7 @@ public class PlayerObstacle : MonoBehaviour
     {
         // Spawn outside the camera's view on the left side
         float xPos = GameplayConstants.platformSpawnPoint.x - obstaclePrefab.transform.lossyScale.x / 2 - gameCamera.CameraWidth() / 2;
-        float zPos = GameplayConstants.obstacleDepth;
+        float zPos = GameplayConstants.playerObstacleDepth;
         float yPos = transform.position.y;
 
         Vector3 spawnPosition = new Vector3(xPos, yPos, zPos);
@@ -73,7 +73,7 @@ public class PlayerObstacle : MonoBehaviour
     {
         if(obstaclesSpawned.Count == 0) return false;
 
-        float heightMin = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.obstacleDepth, VerticalDirection.below) -
+        float heightMin = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.playerObstacleDepth, VerticalDirection.below) -
             obstaclePrefab.transform.lossyScale.y;
 
         return obstaclesSpawned[0].transform.position.y < heightMin;

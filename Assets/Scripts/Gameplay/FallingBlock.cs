@@ -40,26 +40,11 @@ public class FallingBlock : BlockTowerElement
     void OnCollisionEnter2D(Collision2D collision2D)
     {
         CheckForTowerCollision(collision2D);
-
-        CheckForSpikeCollision(collision2D);
     }
 
     void OnCollisionStay2D(Collision2D collision2D)
     {
         CheckForTowerCollision(collision2D);
-    }
-
-    void CheckForSpikeCollision(Collision2D collision2D)
-    {
-        if(TowerIn == null) return;
-
-
-        Spike spikeCollided;
-        if(collision2D.gameObject.TryGetComponent<Spike>(out spikeCollided))
-        {
-            Debug.Log("success");
-            TowerIn.CollisionWithSpike(spikeCollided);
-        }
     }
 
     void CheckForTowerCollision(Collision2D collision2D) 
