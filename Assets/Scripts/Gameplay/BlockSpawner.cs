@@ -78,7 +78,8 @@ public class BlockSpawner : MonoBehaviour
         blockObjectsSpawned.Clear();
     }
 
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Bug", "S2190:Recursion should not be infinite", 
+        Justification = "Gets stopped by the StopSpawning method")]
     IEnumerator StartSpawningBlocks()
     {
         float deltaTimeSinceSpawnTimeChanged = 0f;

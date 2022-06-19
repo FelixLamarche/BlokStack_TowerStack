@@ -2,21 +2,20 @@ using UnityEngine;
 
 public class FallingBlock : BlockTowerElement
 {
-    public bool followBlockBelow = true;
+    public bool FollowBlockBelow { get; set; }
 
+    [SerializeField]
     bool followPerfectlyBlockBelow = true;
+
     float xDeltaBlockBelow = 0f; // DeltaX of the block below at the first frame of this block entering the tower
     BlockTowerElement blockBelow;
 
     Rigidbody2D rb;
-    BoxCollider2D boxCollider2D;
-    FixedJoint2D fixedJoint2D;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        fixedJoint2D = GetComponent<FixedJoint2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
+        FollowBlockBelow = true;
         Height = transform.lossyScale.y;
         Score = 1;
     }
@@ -28,7 +27,7 @@ public class FallingBlock : BlockTowerElement
 
     public void FollowTower()
     {
-        if(blockBelow is null || !followBlockBelow) return;
+        if(blockBelow is null || !FollowBlockBelow) return;
 
         // For "simultaneous movements" start tracking block above, and recursively call every single moveposition
         if(followPerfectlyBlockBelow)
@@ -51,9 +50,7 @@ public class FallingBlock : BlockTowerElement
     {
         if(TowerIn != null) return;
 
-        // Check if it was the top block of the blocktower then attach itself to it
-        BlockTowerElement collidedBlockElement;
-        if(collision2D.gameObject.TryGetComponent<BlockTowerElement>(out collidedBlockElement) &&
+        if (collision2D.gameObject.TryGetComponent(out BlockTowerElement collidedBlockElement) &&
             collidedBlockElement.TowerIn != null &&
             collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
         {

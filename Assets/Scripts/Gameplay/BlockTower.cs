@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class BlockTower : MonoBehaviour
 {
-    public List<BlockTowerElement> blocksStacked = new List<BlockTowerElement>();
     public BlockPlatform PlatformTower 
     {
         get {return platformTower;}
@@ -16,6 +15,7 @@ public class BlockTower : MonoBehaviour
     TowerMovement towerMovement;
     BlockPlatform platformTower;
 
+    readonly List<BlockTowerElement> blocksStacked = new List<BlockTowerElement>();
     int scoreBlocksStacked = 0;
 
     void Awake()
@@ -34,8 +34,8 @@ public class BlockTower : MonoBehaviour
 
     public BlockTowerElement GetTopBlockElement()
     {
-        if(blocksStacked.Count > 0 )
-            return blocksStacked[blocksStacked.Count - 1].GetComponent<BlockTowerElement>();
+        if (blocksStacked.Count > 0)
+            return blocksStacked[^1];
         else
             return null;
     }
@@ -59,7 +59,7 @@ public class BlockTower : MonoBehaviour
 
     public bool IsTopOfTower(BlockTowerElement blockElement)
     {
-        return blocksStacked.Count == 0 ? false : blockElement.Equals(blocksStacked[blocksStacked.Count - 1]);
+        return blocksStacked.Count != 0 && blockElement.Equals(blocksStacked[^1]);
     }
     
     public float GetTowerHeight()

@@ -71,7 +71,7 @@ public class SpikeSpawner : MonoBehaviour
         spikesSpawned.Clear();
     }
 
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Bug", "S2190:Recursion should not be infinite", Justification = "<Pending>")]
     IEnumerator StartSpawningBlocks()
     {
         float deltaTimeSinceSpawnTimeChanged = 0f;
@@ -96,6 +96,9 @@ public class SpikeSpawner : MonoBehaviour
     {
         // To spawn within the boundaries of the blockSpawner
         float randomXPos = spawnManager.GetRandomBlockSpawnPosition(spikePrefab.transform.lossyScale.x);
+        // If no position can be found, we return
+        if (float.IsInfinity(randomXPos)) return;
+
         float depth = GameplayConstants.blockDepth;
         float height = gameCamera.CalculateVerticalEdgeOfScreen(depth, VerticalDirection.above);
 

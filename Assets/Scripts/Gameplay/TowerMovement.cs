@@ -58,9 +58,10 @@ public class TowerMovement : MonoBehaviour
     public void SetMovingBlock(BlockTowerElement block)
     {
         movingBlock = block;
-        if(block is FallingBlock)
+        FallingBlock fallingBlockCast = block as FallingBlock;
+        if(fallingBlockCast != null)
         {
-            ((FallingBlock) block).followBlockBelow = false;
+            fallingBlockCast.FollowBlockBelow = false;
         }
         block.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }

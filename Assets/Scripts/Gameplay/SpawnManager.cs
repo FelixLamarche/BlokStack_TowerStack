@@ -12,7 +12,6 @@ public class SpawnManager : MonoBehaviour
     SpikeSpawner spikeSpawner;
     GameCamera gameCamera;
 
-    List<float> testFloats = new();
     bool isSpawning = false;
 
     void Awake()
@@ -116,18 +115,17 @@ public class SpawnManager : MonoBehaviour
                 } 
             }
 
-            if (!replacedCoordinate)
+            if (!replacedCoordinate && 
+                blockedSpawnRanges[i].x > lowerBoundX && 
+                blockedSpawnRanges[i].y < upperBoundX)
             {
-                if (blockedSpawnRanges[i].x > lowerBoundX && blockedSpawnRanges[i].y < upperBoundX)
-                {
-                    availableSpawnRanges.Add(blockedSpawnRanges[i].x);
-                    availableSpawnRanges.Add(blockedSpawnRanges[i].y);
-                }
+                availableSpawnRanges.Add(blockedSpawnRanges[i].x);
+                availableSpawnRanges.Add(blockedSpawnRanges[i].y);
             }
             availableSpawnRanges.Sort();
 
             // If we completely block a zone, we will overshoot and have to remove a zone
-            if (availableSpawnRanges.Count > 0 && availableSpawnRanges[availableSpawnRanges.Count - 1] > upperBoundX)
+            if (availableSpawnRanges.Count > 0 && availableSpawnRanges[^1] > upperBoundX)
             {
                 availableSpawnRanges.RemoveAt(availableSpawnRanges.Count - 2);
                 availableSpawnRanges.RemoveAt(availableSpawnRanges.Count - 1);
@@ -138,8 +136,6 @@ public class SpawnManager : MonoBehaviour
                 availableSpawnRanges.RemoveAt(1);
             }
         }
-
-        testFloats = availableSpawnRanges;
 
         // Get an a bottom-range index, the range being this randomIndex and randomIndex + 1
         if (availableSpawnRanges.Count == 0)
