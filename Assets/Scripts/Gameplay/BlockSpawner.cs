@@ -7,7 +7,7 @@ public class BlockSpawner : MonoBehaviour
     public float CurTimeBetweenSpawns {get {return curTimeBetweenSpawns;}}
 
     [SerializeField]
-    GameObject blockPrefab;
+    BlockTowerElement blockPrefab;
 
     [SerializeField, Min(0f)]
     float startingTimeBetweenSpawns = 1f;
@@ -19,27 +19,39 @@ public class BlockSpawner : MonoBehaviour
     float curTimeBetweenSpawns;
 
 
-    [SerializeField, Min(0f)]
-    float width = 3f;
-
-    [SerializeField, Min(0f)]
-    float depth = 1f;
-
-
     GameCamera gameCamera;
+    SpawnManager spawnManager;
 
     Coroutine spawnCoroutine;
-    List<GameObject> blockObjectsSpawned = new List<GameObject>();
+    readonly List<BlockTowerElement> blockObjectsSpawned = new List<BlockTowerElement>();
 
     void Awake()
     {
         gameCamera = FindObjectOfType<GameCamera>();
+        spawnManager = FindObjectOfType<SpawnManager>();
+
         curTimeBetweenSpawns = startingTimeBetweenSpawns;
     }
 
     void LateUpdate()
     {
         MoveBlockSpawnerOutsideOfFrame();
+    }
+
+    // Returns a list of the blocks spawned whom are not in a tower
+    public List<GameObject> GetBlocksOnScreen()
+    {
+        List<GameObject> spawnedBlocks = new List<GameObject>();
+        float lowerBoundScreen = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.blockDepth, VerticalDirection.below);
+
+        for(int i = 0; i < blockObjectsSpawned.Count; i++)
+        {
+            if(blockObjectsSpawned[i].transform.position.y > lowerBoundScreen && 
+            !blockObjectsSpawned[i].IsAttachedToTower)
+                spawnedBlocks.Add(blockObjectsSpawned[i].gameObject);
+        }
+
+        return spawnedBlocks;
     }
 
     public void StartSpawning()
@@ -59,9 +71,9 @@ public class BlockSpawner : MonoBehaviour
 
     public void RemoveAllBlocksSpawned()
     {
-        foreach(GameObject blockSpawned in blockObjectsSpawned)
+        foreach(BlockTowerElement blockSpawned in blockObjectsSpawned)
         {
-            Destroy(blockSpawned);
+            Destroy(blockSpawned.gameObject);
         }
         blockObjectsSpawned.Clear();
     }
@@ -90,15 +102,14 @@ public class BlockSpawner : MonoBehaviour
     void SpawnBlock()
     {
         // To spawn within the boundaries of the blockSpawner
-        float maxXDisplacement = blockPrefab.transform.localScale.x / 2;
-        float maxZDisplacement = blockPrefab.transform.localScale.z / 2;
-
-        Vector3 spawnPoint = transform.position + 
-            Vector3.right * Random.Range(-width / 2 + maxXDisplacement, width / 2 - maxXDisplacement) +
-            Vector3.forward * Random.Range(-depth / 2 + maxZDisplacement, depth / 2 - maxZDisplacement)
-            + Vector3.up * blockPrefab.transform.localScale.y / 2;
+        float randomXPos = spawnManager.GetRandomBlockSpawnPosition(blockPrefab.transform.lossyScale.x);
         
-        GameObject blockSpawned = Instantiate(blockPrefab, spawnPoint, Quaternion.identity);
+        // If no spawn position is available, we return
+        if (float.IsInfinity(randomXPos)) return;
+
+        Vector3 worldSpawnPoint = transform.position + new Vector3(randomXPos, blockPrefab.transform.lossyScale.y / 2, 0);
+        
+        BlockTowerElement blockSpawned = Instantiate(blockPrefab, worldSpawnPoint, Quaternion.identity);
         blockObjectsSpawned.Add(blockSpawned);
     }
 
@@ -113,8 +124,8 @@ public class BlockSpawner : MonoBehaviour
     // Draw bounding box of the spawn space
     void OnDrawGizmos()
     {
-        Vector3 zDisplacement = Vector3.forward * depth / 2;
-        Vector3 xDisplacement = Vector3.right * width / 2;
+        Vector3 zDisplacement = Vector3.forward * blockPrefab.transform.lossyScale.z / 2;
+        Vector3 xDisplacement = Vector3.right * blockPrefab.transform.lossyScale.x / 2;
         Gizmos.DrawLine(transform.position + zDisplacement - xDisplacement, transform.position + zDisplacement + xDisplacement); // Back line
         Gizmos.DrawLine(transform.position - xDisplacement + zDisplacement, transform.position - xDisplacement - zDisplacement); // Left line
         Gizmos.DrawLine(transform.position + xDisplacement + zDisplacement, transform.position + xDisplacement - zDisplacement); // Right line

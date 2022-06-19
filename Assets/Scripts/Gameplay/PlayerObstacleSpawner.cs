@@ -21,6 +21,16 @@ public class PlayerObstacleSpawner : MonoBehaviour
     Coroutine spawnCoroutine;
     List<PlayerObstacle> obstaclesSpawned;
 
+
+    void Awake()
+    {
+        obstaclesSpawned = new List<PlayerObstacle>();
+
+        scoreManager = FindObjectOfType<ScoreManager>();
+        blockTower = FindObjectOfType<BlockTower>();
+        gameCamera = FindObjectOfType<GameCamera>();
+    }
+
     public void StartSpawning()
     {
         spawnCoroutine = StartCoroutine(SpawnObstacles());
@@ -33,18 +43,6 @@ public class PlayerObstacleSpawner : MonoBehaviour
             StopCoroutine(spawnCoroutine);
             spawnCoroutine = null;
         }
-    }
-
-
-    void Start()
-    {
-        obstaclesSpawned = new List<PlayerObstacle>();
-
-        scoreManager = FindObjectOfType<ScoreManager>();
-        blockTower = FindObjectOfType<BlockTower>();
-        gameCamera = FindObjectOfType<GameCamera>();
-
-        StartSpawning();
     }
 
     IEnumerator SpawnObstacles()
@@ -69,7 +67,6 @@ public class PlayerObstacleSpawner : MonoBehaviour
     {
         // Remove all obstacles which have deleted themselves
         obstaclesSpawned.RemoveAll(obstacle => obstacle == null);
-
 
         // Spawn outside the camera's view on the left side
         float xPos = GameplayConstants.platformSpawnPoint.x - obstaclePrefab.transform.lossyScale.x / 2 - gameCamera.CameraWidth() / 2;

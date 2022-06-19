@@ -17,32 +17,31 @@ public class GameplayManager : MonoBehaviour
 
     GameCamera gameCamera;
     ScoreManager scoreManager;
+    SpawnManager spawnManager;
 
     void Awake()
     {
         GameRunning = false;
         scoreManager = GetComponent<ScoreManager>();
+        spawnManager = FindObjectOfType<SpawnManager>();
+        gameCamera = FindObjectOfType<GameCamera>();
     }
 
     void Start()
     {
-        gameCamera = FindObjectOfType<GameCamera>();
-
         StartGame();
     }
 
     public void StartGame()
     {
         if(GameRunning) return;
-
         GameRunning = true;
 
         gameCamera.ResetCamera();
         GameInput.ResetInput();
         GameInput.AcceptInputs = true;
 
-        blockSpawner.RemoveAllBlocksSpawned();
-        blockSpawner.StartSpawning();
+        spawnManager.StartSpawning();
 
         blockTower.ResetTower();
 
@@ -57,7 +56,7 @@ public class GameplayManager : MonoBehaviour
         scoreManager.IsCounting = false;
         GameRunning = false;
 
-        blockSpawner.StopSpawning();
+        spawnManager.StopSpawning();
 
         mainMenuButton.SetActive(true);
     }

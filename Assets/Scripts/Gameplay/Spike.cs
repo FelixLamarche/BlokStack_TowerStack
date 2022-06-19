@@ -8,7 +8,7 @@ public class Spike : MonoBehaviour
     {
         BlockTowerElement block; 
 
-        if(other.TryGetComponent<BlockTowerElement>(out block))
+        if(other.TryGetComponent<BlockTowerElement>(out block) && block.IsTopBlock())
         {
             block.CollisionWithSpike(this);
         }

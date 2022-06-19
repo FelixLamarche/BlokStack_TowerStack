@@ -21,13 +21,15 @@ public class BlockTower : MonoBehaviour
     void Awake()
     {
         PlatformTower = GetComponent<BlockPlatform>();
+
+        towerMovement = FindObjectOfType<TowerMovement>();
+        gameCamera = FindObjectOfType<GameCamera>();
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     void Start()
     {
-        towerMovement = FindObjectOfType<TowerMovement>();
-        gameCamera = FindObjectOfType<GameCamera>();
-        scoreManager = FindObjectOfType<ScoreManager>();
+        AddBlockElement(platformTower);
     }
 
     public BlockTowerElement GetTopBlockElement()
@@ -43,12 +45,13 @@ public class BlockTower : MonoBehaviour
         scoreBlocksStacked = 0;
         blocksStacked.Clear();
         PlatformTower.ResetPlatform();
-        blocksStacked.Add(PlatformTower);
+        AddBlockElement(platformTower);
     }
 
     public void AddBlockElement(BlockTowerElement blockToAdd)
     {
         blocksStacked.Add(blockToAdd);
+        blockToAdd.IsAttachedToTower = true;
         scoreBlocksStacked += blockToAdd.Score;
         scoreManager.SetScore(scoreBlocksStacked);
         UpdateTowerMovementTarget();
@@ -89,6 +92,9 @@ public class BlockTower : MonoBehaviour
             lowestBlockOnScreen = blocksStacked[index];
             index--;
         }
+
+        // blocks who've gone out of frame are no longer attached to the tower
+        if(index > 0) blocksStacked[index - 1].IsAttachedToTower = false;
 
         towerMovement.SetMovingBlock(lowestBlockOnScreen);
     }

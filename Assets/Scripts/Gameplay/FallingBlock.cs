@@ -5,7 +5,7 @@ public class FallingBlock : BlockTowerElement
     public bool followBlockBelow = true;
 
     bool followPerfectlyBlockBelow = true;
-    float xDeltaBlockBelow = 0f; // the first frame's x difference from the first frame to keep track of the original seperation
+    float xDeltaBlockBelow = 0f; // DeltaX of the block below at the first frame of this block entering the tower
     BlockTowerElement blockBelow;
 
     Rigidbody2D rb;
@@ -33,7 +33,7 @@ public class FallingBlock : BlockTowerElement
         // For "simultaneous movements" start tracking block above, and recursively call every single moveposition
         if(followPerfectlyBlockBelow)
             rb.MovePosition(new Vector3 (blockBelow.transform.position.x, transform.position.y, transform.position.z));
-        else    
+        else // Else remember the original offset
             rb.MovePosition(new Vector3 (blockBelow.transform.position.x + xDeltaBlockBelow, transform.position.y, transform.position.z));
     }
 
@@ -66,6 +66,7 @@ public class FallingBlock : BlockTowerElement
     {
         TowerIn = blockTower;
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        rb.bodyType = RigidbodyType2D.Kinematic;
         transform.rotation = Quaternion.Euler(new Vector3 (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0f));
 
         // Assure that the blocks touch each others with no gaps whatsoever

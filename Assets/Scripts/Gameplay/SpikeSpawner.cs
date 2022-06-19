@@ -22,17 +22,30 @@ public class SpikeSpawner : MonoBehaviour
     Coroutine spawnCoroutine;
 
     GameCamera gameCamera;
+    SpawnManager spawnManager;
 
-    public void Start()
+    void Awake()
     {
         spikesSpawned = new List<Spike>();
         curTimeBetweenSpawns = startingTimeBetweenSpawns;
 
         gameCamera = FindObjectOfType<GameCamera>();
-
-        StartSpawning();
+        spawnManager = FindObjectOfType<SpawnManager>();
     }
 
+    public List<GameObject> GetSpikesOnScreen()
+    {
+        List<GameObject> spawnedBlocks = new List<GameObject>();
+        float lowerBoundScreen = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.blockDepth, VerticalDirection.below);
+
+        for(int i = 0; i < spikesSpawned.Count; i++)
+        {
+            if(spikesSpawned[i].transform.position.y > lowerBoundScreen)
+                spawnedBlocks.Add(spikesSpawned[i].gameObject);
+        }
+
+        return spawnedBlocks;
+    }
 
     public void StartSpawning()
     {
@@ -49,7 +62,7 @@ public class SpikeSpawner : MonoBehaviour
         }
     }
 
-    public void RemoveAllBlocksSpawned()
+    public void RemoveAllSpikesSpawned()
     {
         foreach(Spike spike in spikesSpawned)
         {
@@ -82,15 +95,11 @@ public class SpikeSpawner : MonoBehaviour
     public void SpawnSpike()
     {
         // To spawn within the boundaries of the blockSpawner
-        float maxXDisplacement = spikePrefab.transform.localScale.x / 2;
-
-        float width = gameCamera.CameraWidth();
+        float randomXPos = spawnManager.GetRandomBlockSpawnPosition(spikePrefab.transform.lossyScale.x);
         float depth = GameplayConstants.blockDepth;
         float height = gameCamera.CalculateVerticalEdgeOfScreen(depth, VerticalDirection.above);
 
-        Vector3 spawnPoint = new Vector3 (Random.Range(-width / 2 + maxXDisplacement, width / 2 - maxXDisplacement),
-                                        height + spikePrefab.transform.lossyScale.y / 2,
-                                        depth);
+        Vector3 spawnPoint = new Vector3 (randomXPos, height + spikePrefab.transform.lossyScale.y / 2, depth);
         
         Spike spikeSpawned = Instantiate(spikePrefab, spawnPoint, Quaternion.identity);
         spikesSpawned.Add(spikeSpawned);

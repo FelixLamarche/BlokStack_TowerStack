@@ -9,6 +9,7 @@ public class BlockPlatform : BlockTowerElement
         blockTower = GetComponent<BlockTower>();
         Height = GetComponent<BoxCollider2D>().size.y;
         Score = 0;
+        
         TowerIn = blockTower;
     }
 
