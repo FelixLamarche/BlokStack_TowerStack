@@ -46,10 +46,4 @@ public class MainMenuManager : MonoBehaviour
             elements[i].SetActive(state);
         }
     }
-
-    // TODO fade in and out the UI Elements
-    void FadeIn()
-    {
-
-    }
 }

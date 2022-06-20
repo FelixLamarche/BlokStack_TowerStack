@@ -15,10 +15,11 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public bool IsCounting = false;
+    public bool IsCounting { get; set; }
 
     void Awake()
     {
+        IsCounting = false;
         Score = 0;
     }
 

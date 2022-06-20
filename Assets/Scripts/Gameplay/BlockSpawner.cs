@@ -23,7 +23,7 @@ public class BlockSpawner : MonoBehaviour
     SpawnManager spawnManager;
 
     Coroutine spawnCoroutine;
-    readonly List<BlockTowerElement> blockObjectsSpawned = new List<BlockTowerElement>();
+    readonly List<BlockTowerElement> blockObjectsSpawned = new();
 
     void Awake()
     {
@@ -41,7 +41,7 @@ public class BlockSpawner : MonoBehaviour
     // Returns a list of the blocks spawned whom are not in a tower
     public List<GameObject> GetBlocksOnScreen()
     {
-        List<GameObject> spawnedBlocks = new List<GameObject>();
+        List<GameObject> spawnedBlocks = new();
         float lowerBoundScreen = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.blockDepth, VerticalDirection.below);
 
         for(int i = 0; i < blockObjectsSpawned.Count; i++)

@@ -17,14 +17,12 @@ public static class GameInput
         get {return deviceInput.TouchPosition;}
     }
     public static bool IsTouchingScreen {
-        get {return deviceInput.isTouchingScreen;}
+        get {return deviceInput.IsTouchingScreen;}
     }
-    static Vector2 inputDirection;
     static DeviceInput deviceInput;
 
     static GameInput()
     {
-        inputDirection = Vector2.zero;
         CreateInputDevice();
     }
 
@@ -33,10 +31,12 @@ public static class GameInput
         if(!(deviceInput is null))
             return;
 
-        deviceInput = GameManager.instance.AddDeviceInput();
+        deviceInput = GameManager.Instance.AddDeviceInput();
     }
 
-    public static void ResetInput() {
-        deviceInput?.ResetInput();
+    public static void ResetInput() 
+    {
+        if(deviceInput != null)
+            deviceInput.ResetInput();
     }
 }

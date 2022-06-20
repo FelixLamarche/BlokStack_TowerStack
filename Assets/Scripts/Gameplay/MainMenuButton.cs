@@ -6,6 +6,6 @@ public class MainMenuButton : MonoBehaviour
 {
     public void GoToMainMenu()
     {
-        GameManager.instance.LoadMainMenuScene();
+        GameManager.Instance.LoadMainMenuScene();
     }
 }

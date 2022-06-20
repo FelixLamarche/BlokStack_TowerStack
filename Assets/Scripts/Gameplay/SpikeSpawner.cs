@@ -35,7 +35,7 @@ public class SpikeSpawner : MonoBehaviour
 
     public List<GameObject> GetSpikesOnScreen()
     {
-        List<GameObject> spawnedBlocks = new List<GameObject>();
+        List<GameObject> spawnedBlocks = new();
         float lowerBoundScreen = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.blockDepth, VerticalDirection.below);
 
         for(int i = 0; i < spikesSpawned.Count; i++)
@@ -102,7 +102,7 @@ public class SpikeSpawner : MonoBehaviour
         float depth = GameplayConstants.blockDepth;
         float height = gameCamera.CalculateVerticalEdgeOfScreen(depth, VerticalDirection.above);
 
-        Vector3 spawnPoint = new Vector3 (randomXPos, height + spikePrefab.transform.lossyScale.y / 2, depth);
+        Vector3 spawnPoint = new(randomXPos, height + spikePrefab.transform.lossyScale.y / 2, depth);
         
         Spike spikeSpawned = Instantiate(spikePrefab, spawnPoint, Quaternion.identity);
         spikesSpawned.Add(spikeSpawned);

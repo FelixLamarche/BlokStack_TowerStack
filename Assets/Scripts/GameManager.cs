@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance {get; private set;}
+    public static GameManager Instance {get; private set;}
 
     void Awake()
     {
-        if(instance is null)
-            instance = this;
+        if(Instance is null)
+            Instance = this;
         else
             Destroy(gameObject);
 

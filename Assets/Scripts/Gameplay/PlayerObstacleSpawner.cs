@@ -15,7 +15,6 @@ public class PlayerObstacleSpawner : MonoBehaviour
 
 
     ScoreManager scoreManager;
-    BlockTower blockTower;
     GameCamera gameCamera;
 
     Coroutine spawnCoroutine;
@@ -27,7 +26,6 @@ public class PlayerObstacleSpawner : MonoBehaviour
         obstaclesSpawned = new List<PlayerObstacle>();
 
         scoreManager = FindObjectOfType<ScoreManager>();
-        blockTower = FindObjectOfType<BlockTower>();
         gameCamera = FindObjectOfType<GameCamera>();
     }
 
@@ -45,6 +43,8 @@ public class PlayerObstacleSpawner : MonoBehaviour
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Bug", "S2190:Recursion should not be infinite", 
+        Justification = "The StopSpawning method stops the infinite loop")]
     IEnumerator SpawnObstacles()
     {
         int scoreForNextSpawn = startingScoreForSpawns;
@@ -101,7 +101,7 @@ public class PlayerObstacleSpawner : MonoBehaviour
             if(iteration++ >= maxIterations) return;
         } while(!isPosAvailable);
 
-        Vector3 spawnPosition = new Vector3(xPos, yPos, zPos);
+        Vector3 spawnPosition = new(xPos, yPos, zPos);
         obstaclesSpawned.Add(Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity));
     }
 

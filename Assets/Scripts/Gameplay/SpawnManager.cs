@@ -27,10 +27,16 @@ public class SpawnManager : MonoBehaviour
     {
         if (isSpawning) return;
 
-        blockSpawner?.RemoveAllBlocksSpawned();
-        blockSpawner?.StartSpawning();
-        obstacleSpawner?.StartSpawning();
-        spikeSpawner?.StartSpawning();
+        if (blockSpawner != null)
+        {
+            blockSpawner.RemoveAllBlocksSpawned();
+            blockSpawner.StartSpawning();
+        }
+        if(obstacleSpawner != null)
+            obstacleSpawner.StartSpawning();
+        if(spikeSpawner != null)
+            spikeSpawner.StartSpawning();
+
         isSpawning = true;
     }
 
@@ -38,9 +44,12 @@ public class SpawnManager : MonoBehaviour
     {
         isSpawning = false;
 
-        blockSpawner?.StopSpawning();
-        obstacleSpawner?.StopSpawning();
-        spikeSpawner?.StopSpawning();
+        if(blockSpawner != null)
+            blockSpawner.StopSpawning();
+        if(obstacleSpawner != null)
+            obstacleSpawner.StopSpawning();
+        if(spikeSpawner != null)
+            spikeSpawner.StopSpawning();
     }
 
     // Get a random unused spawn position for a block
@@ -61,8 +70,8 @@ public class SpawnManager : MonoBehaviour
         List<Vector2> blockedSpawnRanges = new(); // x -> lower-bound x value, y-> higher-bound x value
         for(int i = 0; i < blocksOnScreen.Count; i++)
         {
-            Vector2 blockedZone = new Vector2(blocksOnScreen[i].transform.position.x - blocksOnScreen[i].transform.lossyScale.x / 2,
-                                            blocksOnScreen[i].transform.position.x + blocksOnScreen[i].transform.lossyScale.x / 2);
+            Vector2 blockedZone = new(blocksOnScreen[i].transform.position.x - blocksOnScreen[i].transform.lossyScale.x / 2,
+                                      blocksOnScreen[i].transform.position.x + blocksOnScreen[i].transform.lossyScale.x / 2);
             blockedZone.x -= blockSpawnZoneWidth / 2;
             blockedZone.y += blockSpawnZoneWidth / 2;
             blockedSpawnRanges.Add(blockedZone);
@@ -70,7 +79,7 @@ public class SpawnManager : MonoBehaviour
         blockedSpawnRanges.Sort(new Vector2XCompComparer());
 
 
-        List<float> availableSpawnRanges = new List<float>();
+        List<float> availableSpawnRanges = new();
 
         float spawnWidth = GetSpawnWidth();
 

@@ -83,7 +83,7 @@ public class TowerMovement : MonoBehaviour
     {
         float t = Time.deltaTime / accelerationTime + curSpeed / maxSpeed;
         curSpeed = Mathf.Lerp(0, maxSpeed, t);
-        Vector3 newPos = movingBlock.transform.position + Vector3.right * normalizedSpeed * curSpeed * Time.deltaTime;
+        Vector3 newPos = movingBlock.transform.position + normalizedSpeed * curSpeed * Time.deltaTime * Vector3.right;
         // Clamping within the boundaries of the walls
         newPos.x = Mathf.Clamp(newPos.x, leftSideMinX, rightSideMaxX);
         movingBlock.GetComponent<Rigidbody2D>().MovePosition(newPos);

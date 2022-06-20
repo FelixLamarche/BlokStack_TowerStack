@@ -3,38 +3,33 @@ using UnityEngine;
 
 public abstract class DeviceInput : MonoBehaviour
 {
-    public bool AcceptInputs 
-    {
-        get {return acceptInputs;}
-        set {acceptInputs = value;}
-    }
+    public bool AcceptInputs { get; set; } 
     public Vector2 InputDirection
     {
         get {return inputDirection;}
         protected set {
-            if(value != inputDirection && acceptInputs)
+            if(value != inputDirection && AcceptInputs)
             {
                 inputDirection = value;
                 OnInputDirectionChanged();
             }
         }
     }
-    public EventHandler<InputEventArgs> onInputDirectionChanged;
+    public readonly EventHandler<InputEventArgs> onInputDirectionChanged;
 
     public Vector2 TouchPosition
     {
         get {return touchPosition;}
         protected set {
-            if(value != touchPosition && acceptInputs)
+            if(value != touchPosition && AcceptInputs)
             {
                 touchPosition = value;
             }
         }
     }
 
-    public bool isTouchingScreen {get; protected set;}
+    public bool IsTouchingScreen {get; protected set;}
 
-    protected bool acceptInputs = false;
     private Vector2 inputDirection = Vector2.zero;
     private Vector2 touchPosition = Vector2.zero;
 
@@ -47,13 +42,13 @@ public abstract class DeviceInput : MonoBehaviour
     
     public void ResetInput()
     {
-        bool oldAcceptInputs = acceptInputs;
-        acceptInputs = true;
+        bool oldAcceptInputs = AcceptInputs;
+        AcceptInputs = true;
 
         InputDirection = Vector2.zero;
         TouchPosition = new Vector2(Camera.main.scaledPixelWidth / 2, Camera.main.scaledPixelHeight / 2);
 
-        acceptInputs = oldAcceptInputs;
+        AcceptInputs = oldAcceptInputs;
     }
 
     protected abstract void SetInputDirection();

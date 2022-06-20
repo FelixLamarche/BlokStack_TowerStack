@@ -45,9 +45,9 @@ public class PlayerObstacle : MonoBehaviour
         float zPos = GameplayConstants.playerObstacleDepth;
         float yPos = transform.position.y;
 
-        Vector3 spawnPosition = new Vector3(xPos, yPos, zPos);
+        Vector3 spawnPosition = new(xPos, yPos, zPos);
         PlayerObstacleObject obstacleSpawned = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
-        obstacleSpawned.speed = obstacleSpeed;
+        obstacleSpawned.Speed = obstacleSpeed;
 
         obstaclesSpawned.Add(obstacleSpawned);
     }
@@ -63,7 +63,7 @@ public class PlayerObstacle : MonoBehaviour
         if(obstaclesSpawned.Count == 0)
             return true;
 
-        PlayerObstacleObject latestSpawn = obstaclesSpawned[obstaclesSpawned.Count - 1];
+        PlayerObstacleObject latestSpawn = obstaclesSpawned[^1];
         float xPositionRequiredToSpawnMore = -(gameCamera.CameraWidth() / 2) + latestSpawn.transform.lossyScale.x / 2 + obstacleGap;
         
         return latestSpawn.transform.position.x >= xPositionRequiredToSpawnMore;

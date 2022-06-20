@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class BlockPlatform : BlockTowerElement
 {
-    BlockTower blockTower;
-
     void Awake()
     {
-        blockTower = GetComponent<BlockTower>();
+        TowerIn = GetComponent<BlockTower>();
         Height = GetComponent<BoxCollider2D>().size.y;
         Score = 0;
-        
-        TowerIn = blockTower;
     }
 
     void Start()

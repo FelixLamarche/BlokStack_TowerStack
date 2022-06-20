@@ -22,14 +22,14 @@ public class PlayerTouchLocation : MonoBehaviour
         
         if(GameInput.IsTouchingScreen)
         {
-            Vector3 screenPosWithDepth = new Vector3(GameInput.TouchPosition.x, GameInput.TouchPosition.y, transform.position.z);
+            Vector3 screenPosWithDepth = new(GameInput.TouchPosition.x, GameInput.TouchPosition.y, transform.position.z);
             Vector2 pos2D = gameCamera.ScreenPositionToWorldPoint2D(screenPosWithDepth);
-            transform.position = new Vector3(pos2D.x, pos2D.y, transform.position.z);
+            transform.position = new(pos2D.x, pos2D.y, transform.position.z);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collider2D){
-        if(collider2D.tag == "PlayerObstacle"){
+        if(collider2D.CompareTag("PlayerObstacle")){
             FindObjectOfType<GameplayManager>().StopGame();
         }
     }

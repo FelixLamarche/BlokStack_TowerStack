@@ -15,7 +15,7 @@ public class BlockTower : MonoBehaviour
     TowerMovement towerMovement;
     BlockPlatform platformTower;
 
-    readonly List<BlockTowerElement> blocksStacked = new List<BlockTowerElement>();
+    readonly List<BlockTowerElement> blocksStacked = new();
     int scoreBlocksStacked = 0;
 
     void Awake()

@@ -85,7 +85,7 @@ public class GameCamera : MonoBehaviour
 
         // This represents the additional height gained from the projection of a straight plane onto the angled camera plane
         float projectedHeightMaximum = Mathf.Tan(angle * Mathf.Deg2Rad) * 2 * cameraView.orthographicSize;
-        projectedHeightMaximum = projectedHeightMaximum * Mathf.Sin(angle * Mathf.Deg2Rad);
+        projectedHeightMaximum *= Mathf.Sin(angle * Mathf.Deg2Rad);
 
         float screenViewPortHeightClamped = Mathf.Clamp01(cameraView.ScreenToViewportPoint(screenPos).y);
         // Need to reverse, as the maximum angle discrepancy comes at the bottom of the screen which maps to 0 in viewport.
@@ -134,7 +134,7 @@ public class GameCamera : MonoBehaviour
         float t = 0f;
         float sizeBefore = cameraView.orthographicSize;
         float yHeightBefore = transform.position.y;
-        float yHeight = 0f;
+        float yHeight;
 
         float timeToFitTower = minTimeToFitTowerInFrame;
         BlockSpawner blockSpawner = FindObjectOfType<BlockSpawner>();

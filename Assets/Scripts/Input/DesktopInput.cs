@@ -4,12 +4,12 @@ public class DesktopInput : DeviceInput
 {
     protected override void SetInputDirection()
     {
-        InputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        InputDirection = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
     protected override void SetTouchPosition()
     {
-        isTouchingScreen = Input.GetMouseButton(0);
-        if(isTouchingScreen)
+        IsTouchingScreen = Input.GetMouseButton(0);
+        if(IsTouchingScreen)
         {
             TouchPosition = Input.mousePosition;
         }

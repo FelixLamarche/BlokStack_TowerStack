@@ -26,8 +26,7 @@ public class BlockDetector : MonoBehaviour
 
     void CheckForBlockCollision(Collider2D collider) 
     {
-        BlockTowerElement blockElement;
-        if(collider.TryGetComponent<BlockTowerElement>(out blockElement) && 
+        if(collider.TryGetComponent(out BlockTowerElement blockElement) && 
             blockElement.TowerIn is null)
         {
             gameplayManager.StopGame();
