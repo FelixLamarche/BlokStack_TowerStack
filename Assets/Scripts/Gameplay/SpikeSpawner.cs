@@ -35,16 +35,16 @@ public class SpikeSpawner : MonoBehaviour
 
     public List<GameObject> GetSpikesOnScreen()
     {
-        List<GameObject> spawnedBlocks = new();
+        List<GameObject> spawnedSpikes = new();
         float lowerBoundScreen = gameCamera.CalculateVerticalEdgeOfScreen(GameplayConstants.blockDepth, VerticalDirection.below);
 
         for(int i = 0; i < spikesSpawned.Count; i++)
         {
             if(spikesSpawned[i].transform.position.y > lowerBoundScreen)
-                spawnedBlocks.Add(spikesSpawned[i].gameObject);
+                spawnedSpikes.Add(spikesSpawned[i].gameObject);
         }
 
-        return spawnedBlocks;
+        return spawnedSpikes;
     }
 
     public void StartSpawning()

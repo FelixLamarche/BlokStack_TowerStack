@@ -290,7 +290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 525458137}
-  IsCounting: 0
 --- !u!114 &214516459
 MonoBehaviour:
   m_ObjectHideFlags: 0

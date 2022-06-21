@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class SpawnManager : MonoBehaviour
     GameCamera gameCamera;
 
     bool isSpawning = false;
+    public readonly Mutex spawnMutex = new();
 
     void Awake()
     {
@@ -150,9 +152,9 @@ public class SpawnManager : MonoBehaviour
         if (availableSpawnRanges.Count == 0)
             return float.PositiveInfinity;
 
-        int randomIndex = Random.Range(0, availableSpawnRanges.Count - 2);
-
-        return Random.Range(availableSpawnRanges[randomIndex], availableSpawnRanges[randomIndex + 1]);
+        int randomIndex = Random.Range(0, availableSpawnRanges.Count / 2) * 2; // Get an even-index for the left border of the available zone
+        float randomSpawnPosition = Random.Range(availableSpawnRanges[randomIndex], availableSpawnRanges[randomIndex + 1]);
+        return randomSpawnPosition;
     }
 
     float GetSpawnWidth()
