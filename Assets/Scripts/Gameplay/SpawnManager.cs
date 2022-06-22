@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -14,7 +13,6 @@ public class SpawnManager : MonoBehaviour
     GameCamera gameCamera;
 
     bool isSpawning = false;
-    public readonly Mutex spawnMutex = new();
 
     void Awake()
     {
@@ -135,7 +133,7 @@ public class SpawnManager : MonoBehaviour
             }
             availableSpawnRanges.Sort();
 
-            // If we completely block a zone, we will overshoot and have to remove a zone
+            // If we completely block a zone, we will overshoot and have to remove the whole zone
             if (availableSpawnRanges.Count > 0 && availableSpawnRanges[^1] > upperBoundX)
             {
                 availableSpawnRanges.RemoveAt(availableSpawnRanges.Count - 2);

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BlockTowerElement : MonoBehaviour
 {
     public BlockTower TowerIn {get; protected set;}
-    public float Height {get; protected set;}
+    public Vector3 Size { get { return Utilities.GetSize(gameObject); } }
     public int Score {get; protected set;}
     public bool IsAttachedToTower{get; set;}
 

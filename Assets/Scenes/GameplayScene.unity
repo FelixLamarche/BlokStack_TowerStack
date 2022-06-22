@@ -275,7 +275,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &214516458
 MonoBehaviour:
@@ -1059,7 +1059,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1492729014
 MonoBehaviour:
@@ -1384,42 +1384,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7066908220415568928, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: blockTower
-      value: 
-      objectReference: {fileID: 329163463}
-    - target: {fileID: 7066908220415568928, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: blockSpawner
-      value: 
-      objectReference: {fileID: 156465512}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: gameElements.Array.data[0]
-      value: 
-      objectReference: {fileID: 525458135}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: mainMenuElements.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: mainMenuElements.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: mainMenuElements.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: onLosingElements.Array.data[0]
-      value: 
-      objectReference: {fileID: 525458135}
-    - target: {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: onLosingElements.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7066908220415568931, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-      propertyPath: scoreText
-      value: 
-      objectReference: {fileID: 525458137}
     - target: {fileID: 7066908220415568956, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -1468,9 +1432,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7066908220415568930, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
-    - {fileID: 7066908220415568931, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7615e7c2f34d8334180a53d821d9cdc2, type: 3}
 --- !u!1001 &7957042235392982578
 PrefabInstance:

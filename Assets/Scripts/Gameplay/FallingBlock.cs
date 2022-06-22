@@ -16,7 +16,6 @@ public class FallingBlock : BlockTowerElement
     {
         rb = GetComponent<Rigidbody2D>();
         FollowBlockBelow = true;
-        Height = transform.lossyScale.y;
         Score = 1;
     }
 
@@ -54,8 +53,12 @@ public class FallingBlock : BlockTowerElement
             collidedBlockElement.TowerIn != null &&
             collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
         {
-            // TODO check if block is close enough to the top to enter, touching the top block is not sufficient
-            EnterTower(collidedBlockElement.TowerIn);
+            const float verticalMarginToEnterTower = 0.2f;
+            float distanceCenters = collidedBlockElement.Size.y / 2 + Size.y / 2; // Required height over the tower's highest block
+            float margin = transform.position.y - collidedBlockElement.transform.position.y;
+
+            if(margin > distanceCenters - verticalMarginToEnterTower)
+                EnterTower(collidedBlockElement.TowerIn);
         }
     }
 
@@ -68,7 +71,7 @@ public class FallingBlock : BlockTowerElement
 
         // Assure that the blocks touch each others with no gaps whatsoever
         blockBelow = blockTower.GetTopBlockElement();
-        float newY = blockBelow.transform.position.y + blockBelow.Height / 2 + transform.lossyScale.y / 2;
+        float newY = blockBelow.transform.position.y + blockBelow.Size.y / 2 + Size.y / 2;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
         xDeltaBlockBelow = transform.position.x - blockBelow.transform.position.x;

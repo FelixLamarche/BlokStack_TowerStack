@@ -65,7 +65,7 @@ public class BlockTower : MonoBehaviour
     public float GetTowerHeight()
     {
         BlockTowerElement blockElement = GetTopBlockElement();
-        return blockElement is null ? 0f : blockElement.transform.position.y + blockElement.Height / 2;
+        return blockElement is null ? 0f : blockElement.transform.position.y + blockElement.Size.y / 2;
     }
 
     public void CollisionWithSpike(Spike spike)
@@ -87,7 +87,7 @@ public class BlockTower : MonoBehaviour
         BlockTowerElement lowestBlockOnScreen = blocksStacked[index];
         while(index >= 0)
         {
-            if(lowestBlockOnScreen.transform.position.y - lowestBlockOnScreen.Height < yHeightMin)
+            if(lowestBlockOnScreen.transform.position.y - lowestBlockOnScreen.Size.y < yHeightMin)
                 break;
             lowestBlockOnScreen = blocksStacked[index];
             index--;

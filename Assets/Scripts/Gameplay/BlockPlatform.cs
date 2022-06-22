@@ -5,7 +5,6 @@ public class BlockPlatform : BlockTowerElement
     void Awake()
     {
         TowerIn = GetComponent<BlockTower>();
-        Height = GetComponent<BoxCollider2D>().size.y;
         Score = 0;
     }
 
