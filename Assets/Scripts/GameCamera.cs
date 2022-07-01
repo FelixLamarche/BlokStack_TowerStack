@@ -24,6 +24,9 @@ public class GameCamera : MonoBehaviour
     [SerializeField]
     Camera cameraView;
 
+    [SerializeField]
+    AnimationCurve cameraSmoothing;
+
     Coroutine resizingCameraCoroutine;
     float oldTowerHeight = 0f;
     Vector3 startingPosition;
@@ -68,7 +71,7 @@ public class GameCamera : MonoBehaviour
 
     public float CameraWidth()
     {
-        return this.cameraView.aspect * this.cameraView.orthographicSize * 2;
+        return cameraView.aspect * cameraView.orthographicSize * 2;
     }
 
     // Factors in the angle of the orthographic camera
@@ -120,7 +123,8 @@ public class GameCamera : MonoBehaviour
             return;
 
         oldTowerHeight = topOfTowerY;
-        float newOrthographicSize = Mathf.Max(topOfTowerY, startingOrthogonalSize);
+        // Resizing is based on making the top of the tower arrive at the middle of the screen
+        float newOrthographicSize = Mathf.Max(topOfTowerY, startingOrthogonalSize); 
         newOrthographicSize = Mathf.Min(newOrthographicSize, maximumOrthogonalSize);
         float yHeightCamera = Mathf.Max(topOfTowerY + marginOrthogonalSize, startingPosition.y);
 
@@ -131,22 +135,29 @@ public class GameCamera : MonoBehaviour
 
     IEnumerator ResizingCameraToFit(float orthogonalSizeGoal, float yHeightGoal)
     {
-        float t = 0f;
         float sizeBefore = cameraView.orthographicSize;
         float yHeightBefore = transform.position.y;
+        float time = 0f;
+        float t;
         float yHeight;
 
         float timeToFitTower = minTimeToFitTowerInFrame;
+
+        // Makes sure the camera can keep up with the speed of the block spawns
         BlockSpawner blockSpawner = FindObjectOfType<BlockSpawner>();
         if(blockSpawner != null) 
             timeToFitTower = Mathf.Min(timeToFitTower, blockSpawner.CurTimeBetweenSpawns);
 
-        while(t < 1)
+        while(time < timeToFitTower)
         {
-            t += Time.deltaTime / timeToFitTower;
+
+            time += Time.deltaTime;
+            t = time / timeToFitTower;
+
             cameraView.orthographicSize = Mathf.Lerp(sizeBefore, orthogonalSizeGoal, t);
 
-            yHeight = Mathf.Lerp(yHeightBefore, yHeightGoal, t);
+            float smoothT = cameraSmoothing.Evaluate(t);
+            yHeight = Mathf.Lerp(yHeightBefore, yHeightGoal, smoothT);
             transform.position = new Vector3(transform.position.x, yHeight, transform.position.z);
 
             background.ScaleToFitOrthographicCameraView(cameraView.orthographicSize);

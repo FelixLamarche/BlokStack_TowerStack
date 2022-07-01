@@ -7,6 +7,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     float maxSpawnAreaWidth = 7f;
 
+    [SerializeField]
+    GameParameters gameParameters;
+
     BlockSpawner blockSpawner;
     PlayerObstacleSpawner obstacleSpawner;
     SpikeSpawner spikeSpawner;
@@ -16,10 +19,11 @@ public class SpawnManager : MonoBehaviour
 
     void Awake()
     {
+        gameCamera = FindObjectOfType<GameCamera>();
+
         blockSpawner = FindObjectOfType<BlockSpawner>();
         obstacleSpawner = FindObjectOfType<PlayerObstacleSpawner>();
         spikeSpawner = FindObjectOfType<SpikeSpawner>();
-        gameCamera = FindObjectOfType<GameCamera>();
     }
 
 
@@ -32,9 +36,9 @@ public class SpawnManager : MonoBehaviour
             blockSpawner.RemoveAllBlocksSpawned();
             blockSpawner.StartSpawning();
         }
-        if(obstacleSpawner != null)
+        if(gameParameters.spawnPlayerObstacles && obstacleSpawner != null)
             obstacleSpawner.StartSpawning();
-        if(spikeSpawner != null)
+        if(gameParameters.spawnSpikes && spikeSpawner != null)
             spikeSpawner.StartSpawning();
 
         isSpawning = true;

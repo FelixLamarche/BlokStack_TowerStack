@@ -1,17 +1,12 @@
 using UnityEngine;
 
-// TODO this class is unused currently
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField]
     GameObject[] mainMenuElements;
 
     [SerializeField]
-    GameObject[] gameElements;
-
-    [SerializeField]
-    GameObject[] onLosingElements;
-
+    GameObject[] gameOptionsElements;
 
     public void Awake()
     {
@@ -20,24 +15,16 @@ public class MainMenuManager : MonoBehaviour
 
     public void ShowMainMenu()
     {
-        ChangeStateElements(gameElements, false);
-        ChangeStateElements(onLosingElements, false);
         ChangeStateElements(mainMenuElements, true);
+        ChangeStateElements(gameOptionsElements, false);
     }
 
-    public void ShowGameUI()
+    public void ShowGameOptions()
     {
-        ChangeStateElements(onLosingElements, false);
         ChangeStateElements(mainMenuElements, false);
-        ChangeStateElements(gameElements, true);
+        ChangeStateElements(gameOptionsElements, true);
     }
 
-    public void ShowLoseUI()
-    {
-        ChangeStateElements(mainMenuElements, false);
-        ChangeStateElements(gameElements, false);
-        ChangeStateElements(onLosingElements, true);
-    }
 
     void ChangeStateElements(GameObject[] elements, bool state)
     {

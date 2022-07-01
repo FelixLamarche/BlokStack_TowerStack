@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FallingBlock : BlockTowerElement
@@ -5,7 +7,7 @@ public class FallingBlock : BlockTowerElement
     public bool FollowBlockBelow { get; set; }
 
     [SerializeField]
-    bool followPerfectlyBlockBelow = true;
+    bool rememberOriginalHorizontalOffset = false;
 
     float xDeltaBlockBelow = 0f; // DeltaX of the block below at the first frame of this block entering the tower
     BlockTowerElement blockBelow;
@@ -15,7 +17,6 @@ public class FallingBlock : BlockTowerElement
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        FollowBlockBelow = true;
         Score = 1;
     }
 
@@ -29,10 +30,10 @@ public class FallingBlock : BlockTowerElement
         if(blockBelow is null || !FollowBlockBelow) return;
 
         // For "simultaneous movements" start tracking block above, and recursively call every single moveposition
-        if(followPerfectlyBlockBelow)
-            rb.MovePosition(new Vector3 (blockBelow.transform.position.x, transform.position.y, transform.position.z));
-        else // Else remember the original offset
+        if(rememberOriginalHorizontalOffset)
             rb.MovePosition(new Vector3 (blockBelow.transform.position.x + xDeltaBlockBelow, transform.position.y, transform.position.z));
+        else // Else remember the original offset
+            rb.MovePosition(new Vector3 (blockBelow.transform.position.x, transform.position.y, transform.position.z));
     }
 
     void OnCollisionEnter2D(Collision2D collision2D)
@@ -53,7 +54,7 @@ public class FallingBlock : BlockTowerElement
             collidedBlockElement.TowerIn != null &&
             collidedBlockElement.TowerIn.IsTopOfTower(collidedBlockElement))
         {
-            const float verticalMarginToEnterTower = 0.2f;
+            const float verticalMarginToEnterTower = 0.25f;
             float distanceCenters = collidedBlockElement.Size.y / 2 + Size.y / 2; // Required height over the tower's highest block
             float margin = transform.position.y - collidedBlockElement.transform.position.y;
 
@@ -76,5 +77,28 @@ public class FallingBlock : BlockTowerElement
 
         xDeltaBlockBelow = transform.position.x - blockBelow.transform.position.x;
         blockTower.AddBlockElement(this);
+
+        if (!rememberOriginalHorizontalOffset)
+            StartCoroutine(SmoothEntryInTower());
+        else
+            FollowBlockBelow = true;
+    }
+
+    IEnumerator SmoothEntryInTower()
+    {
+        const float entryTime = 0.08f;
+        float time = 0;
+        float originalPos = transform.position.x;
+
+        while(time <= entryTime)
+        {
+            yield return new WaitForFixedUpdate();
+            time += Time.fixedDeltaTime;
+
+            float newX = Mathf.Lerp(originalPos, blockBelow.transform.position.x, time / entryTime);
+
+            rb.MovePosition(new Vector3(newX, transform.position.y, transform.position.z));
+        }
+        FollowBlockBelow = true;
     }
 }
